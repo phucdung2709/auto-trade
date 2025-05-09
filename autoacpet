@@ -1,0 +1,73 @@
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TradingCmds = require(ReplicatedStorage.Library.Client.TradingCmds)
+local TradeState = require(ReplicatedStorage.Library.Client.TradingCmds.TradeState)
+
+local localPlayer = Players.LocalPlayer
+
+print("🤖 Script started: Auto Accept, Ready & Confirm...")
+
+
+task.spawn(function()
+    while true do
+        local requests = TradingCmds.GetAllRequests()
+        for fromPlayer, targets in pairs(requests) do
+            if targets[localPlayer] then
+                print("📥 Incoming trade request from:", fromPlayer.Name)
+                local ok, err = TradingCmds.Request(fromPlayer)
+                if ok then
+                    print("✅ Sent accept request back to:", fromPlayer.Name)
+                else
+                    warn("⚠️ Accept request failed:", err)
+                end
+            end
+        end
+        task.wait(1) -- Check mỗi 1 giây
+    end
+end)
+
+
+TradeState.TradeSetReady:Connect(function(tradeId, playerIndex, isReady)
+    local state = TradingCmds.GetState()
+    if not state then return end
+
+    local myIndex = state:PlayerIndex(localPlayer)
+    local otherIndex = state:Index2(myIndex)
+
+    if playerIndex == otherIndex and isReady and not state._ready[myIndex] then
+        local ok, err = TradingCmds.SetReady(true)
+        if ok then
+            print("✅ Auto READY: đối phương ready, mình đã ready theo")
+        else
+            warn("⚠️ Ready thất bại:", err)
+        end
+    end
+end)
+
+
+TradeState.TradeSetConfirmed:Connect(function(tradeId, playerIndex, isConfirmed)
+    local state = TradingCmds.GetState()
+    if not state then return end
+
+    local myIndex = state:PlayerIndex(localPlayer)
+    local otherIndex = state:Index2(myIndex)
+
+    if playerIndex == otherIndex and isConfirmed and not state._confirmed[myIndex] then
+        local ok, err = TradingCmds.SetConfirmed(true)
+        if ok then
+            print("✅ Auto CONFIRM: đối phương confirm, mình đã confirm theo")
+        else
+            warn("⚠️ Confirm thất bại:", err)
+        end
+    end
+end)
+
+
+TradeState.TradeCreated:Connect(function(tradeId, player1, player2)
+    print("📥 Trade created between", player1.Name, "and", player2.Name)
+end)
+
+
+TradeState.TradeDestroyed:Connect(function(tradeId, reason)
+    print("🎉 Trade ended. Reason:", reason or "unknown")
+end)
