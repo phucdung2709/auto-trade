@@ -1,0 +1,124 @@
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TradingCmds = require(ReplicatedStorage.Library.Client.TradingCmds)
+local InventoryCmds = require(ReplicatedStorage.Library.Client.InventoryCmds)
+local WaitBeforeReady = 4
+local WaitBeforeConfirm = 4
+local AutoReady = true
+local AutoConfirm = true
+
+
+local targetPlayer = Players:FindFirstChild(Config.TargetPlayer)
+if not targetPlayer then
+    warn("❌ Không tìm thấy người chơi:", Config.TargetPlayer)
+    return
+end
+
+
+local container = InventoryCmds.Container()
+if not container or not container._store or not container._store._byUID then
+    warn("❌ Không thể lấy container hoặc store trống")
+    return
+end
+
+
+local itemsToAdd = {}
+for uid, item in pairs(container._store._byUID) do
+    if typeof(item) == "table" and typeof(item._stackKey) == "string" then
+        local success, decoded = pcall(function()
+            return HttpService:JSONDecode(item._stackKey)
+        end)
+        local className = item.Class and item.Class.Name
+        if success and decoded and decoded.id and className then
+            for _, wanted in ipairs(Config.WantedItems) do
+                if decoded.id == wanted.id and className == wanted.class then
+                    table.insert(itemsToAdd, {
+                        uid = item._uid or (item.GetUID and item:GetUID()),
+                        className = className,
+                        amount = item.GetAmount and item:GetAmount() or 1,
+                        name = decoded.id
+                    })
+                    break
+                end
+            end
+        end
+    end
+end
+
+if #itemsToAdd == 0 then
+    warn("❌ Không tìm thấy item/pet nào phù hợp trong kho")
+    return
+end
+
+
+local success = TradingCmds.Request(targetPlayer)
+if not success then
+    warn("❌ Không thể gửi yêu cầu trade tới:", Config.TargetPlayer)
+    return
+end
+
+
+local tradeCreatedEvent = ReplicatedStorage.Network:WaitForChild("Trading: Created")
+local tradeCreated = false
+
+local connection
+connection = tradeCreatedEvent.OnClientEvent:Connect(function(tradeId, fromPlayer, toPlayer)
+    if fromPlayer == Players.LocalPlayer or toPlayer == Players.LocalPlayer then
+        tradeCreated = true
+        connection:Disconnect()
+    end
+end)
+
+local timeout = 0
+while not tradeCreated and timeout < 30 do
+    task.wait(1)
+    timeout += 1
+end
+
+if not tradeCreated then
+    warn("❌ Hết giờ đợi người nhận accept trade")
+    return
+end
+
+
+for _, obj in ipairs(itemsToAdd) do
+    if obj.uid and obj.className then
+        print(string.format("➡️ Add: %s | Class: %s | UID: %s | Amount: %s", obj.name, obj.className, obj.uid, obj.amount))
+        local ok, err = TradingCmds.SetItem(obj.className, obj.uid, obj.amount)
+        if not ok then
+            warn("❌ Không add được:", obj.name, "| Lỗi:", err)
+        end
+        task.wait(0.2)
+    end
+end
+
+
+if Config.TradeMessage and Config.TradeMessage ~= "" then
+    TradingCmds.Message(Config.TradeMessage)
+end
+
+
+if AutoReady then
+    print("⌛ Đợi " .. WaitBeforeReady .. " giây trước khi ready...")
+    task.wait(WaitBeforeReady)
+    local okReady, errReady = TradingCmds.SetReady(true)
+    if okReady then
+        print("✅ Đã ready trade")
+    else
+        warn("⚠️ Ready thất bại:", errReady)
+        return
+    end
+end
+
+
+if AutoConfirm then
+    print("⌛ Đợi " .. WaitBeforeConfirm .. " giây trước khi confirm...")
+    task.wait(WaitBeforeConfirm)
+    local okConfirm, errConfirm = TradingCmds.SetConfirmed(true)
+    if okConfirm then
+        print("✅ Đã confirm trade thành công")
+    else
+        warn("⚠️ Confirm thất bại:", errConfirm)
+    end
+end
