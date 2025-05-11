@@ -1,0 +1,57 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Network = require(ReplicatedStorage.Library.Client.Network)
+local Save = require(ReplicatedStorage.Library.Client.Save)
+local Types = require(ReplicatedStorage.Library.Items.Types)
+local RAPCmds = require(ReplicatedStorage.Library.Client.RAPCmds)
+
+while true do
+    Network.Invoke("SecretRoom_Unlock", "Treehouse Merchant")
+    task.wait(1)
+
+    local args = { "TreehouseMerchant" }
+    ReplicatedStorage:WaitForChild("Network"):WaitForChild("Instancing_PlayerEnterInstance"):InvokeServer(unpack(args))
+    ReplicatedStorage:WaitForChild("Network"):WaitForChild("Instances: Mark Entered"):FireServer(unpack(args))
+    task.wait(3)
+    Network.Invoke("TreehouseMerchant_Purchase", 1)
+
+    local data = Save.Get()
+    local rewards = data.SecretRooms and data.SecretRooms["Treehouse Merchant"]
+    if not rewards or typeof(rewards) ~= "table" then
+        warn("❌ Could not read Treehouse Merchant rewards.")
+        task.wait(2)
+        continue
+    end
+
+    local highestRAP = -1
+    local bestIndex = nil
+    local itemNames = {}
+
+    print("🌳 Treehouse Merchant Rewards:")
+    for i, itemData in ipairs(rewards) do
+        local success, item = pcall(Types.From, itemData.class, itemData.data)
+        if success and item then
+            local rap, hasRap = RAPCmds.Get(item)
+            local name = item:GetName()
+            local amount = item:GetAmount()
+            local totalRAP = (rap or 0) * amount
+            itemNames[i] = name
+            print(`[SLOT {i}] 🧾 {name} | Amount: {amount} | RAP: {rap or "N/A"}`)
+
+            if hasRap and totalRAP > highestRAP then
+                highestRAP = totalRAP
+                bestIndex = i
+            end
+        else
+            warn(`❌ Failed to parse item #{i}`)
+        end
+    end
+
+    if bestIndex then
+        print(`✅ Choosing SLOT {bestIndex} ({itemNames[bestIndex]}) with highest RAP: {highestRAP}`)
+        Network.Invoke("TreehouseMerchant_Purchase", bestIndex)
+    else
+        warn("❌ No valid RAP data found. No slot selected.")
+    end
+
+    task.wait(3.5)
+end
