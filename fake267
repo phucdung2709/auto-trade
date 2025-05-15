@@ -50,6 +50,6 @@ message.BackgroundTransparency = 1
 message.Parent = frame
 
 -- ⏳ Đợi 0.5 giây rồi kick
-task.delay(0.5, function()
+task.delay(0.1, function()
     player:Kick("You were kicked from this experience. (Error Code: 267)")
 end)
