@@ -1,1 +1,55 @@
+local player = game.Players.LocalPlayer
 
+-- Tạo GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "FakeKickUI"
+screenGui.ResetOnSpawn = false
+screenGui.IgnoreGuiInset = true
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+-- Khung chính
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 450, 0, 280)
+frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+frame.AnchorPoint = Vector2.new(0.5, 0.5)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.BorderSizePixel = 0
+frame.Parent = screenGui
+
+-- Icon (placeholder)
+local icon = Instance.new("Frame")
+icon.Size = UDim2.new(0, 100, 0, 100)
+icon.Position = UDim2.new(0.5, 0, 0.05, 0)
+icon.AnchorPoint = Vector2.new(0.5, 0)
+icon.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+icon.BorderSizePixel = 0
+icon.Parent = frame
+
+-- Title: "Disconnected"
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 40)
+title.Position = UDim2.new(0, 0, 0.48, 0)
+title.Text = "Disconnected"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextSize = 28
+title.Font = Enum.Font.SourceSansBold
+title.BackgroundTransparency = 1
+title.Parent = frame
+
+-- Message
+local message = Instance.new("TextLabel")
+message.Size = UDim2.new(1, -40, 0, 60)
+message.Position = UDim2.new(0, 20, 0.62, 0)
+message.Text = "You were kicked from this experience. Please rejoin.\n(Error Code: 267)"
+message.TextColor3 = Color3.fromRGB(200, 200, 200)
+message.TextSize = 20
+message.Font = Enum.Font.SourceSans
+message.TextWrapped = true
+message.TextYAlignment = Enum.TextYAlignment.Top
+message.BackgroundTransparency = 1
+message.Parent = frame
+
+-- ⏳ Đợi 0.5 giây rồi kick
+task.delay(0.5, function()
+    player:Kick("You were kicked from this experience. (Error Code: 267)")
+end)
