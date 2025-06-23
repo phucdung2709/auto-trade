@@ -1,0 +1,601 @@
+repeat task.wait() until game:IsLoaded()
+task.wait(1)
+local config = {
+    WebhookURL = "https://discord.com/api/webhooks/1385224749290098831/A8DswmlhPVsjLcFcyjDZ-AF8KfZvTibIf-u6bl8WTK4k5EBrM7uuxVVKQziFEicr2mS8",
+    PlayerDiscordId = "1199217337144987649"
+}
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local HttpService = game:GetService("HttpService")
+local Animals = require(ReplicatedStorage:WaitForChild("Datas"):WaitForChild("Animals"))
+local Mutations = require(ReplicatedStorage:WaitForChild("Datas"):WaitForChild("Mutations"))
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local rootPart = character:WaitForChild("HumanoidRootPart")
+local cash = player:WaitForChild("leaderstats"):WaitForChild("Cash")
+local lp = Players.LocalPlayer
+local virtualUser = game:GetService("VirtualUser")
+local player = game:GetService("Players").LocalPlayer
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local coinsShopService = replicatedStorage:WaitForChild("Packages"):WaitForChild("Net"):WaitForChild("RF/CoinsShopService/RequestBuy")
+local cashValue = player:WaitForChild("leaderstats"):WaitForChild("Cash")
+local itemName = "Speed Coil"
+local itemPrice = 750
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local function antiAFK()
+    while true do
+        wait(60)
+        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.L, false, game)
+        wait(0.1)
+        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.L, false, game)
+    end
+end
+local function equipItemWhenAvailable()
+    local character = player.Character or player.CharacterAdded:Wait()
+    local backpack = player:WaitForChild("Backpack")
+    while true do
+        local tool = backpack:FindFirstChild(itemName)
+        if tool then
+            tool.Parent = character
+            break
+        end
+        wait(0.5)
+    end
+end
+local function checkAndBuySpeedCoil()
+    while cashValue.Value < itemPrice do
+        wait(5)
+    end
+    local success = coinsShopService:InvokeServer(itemName)
+    if success then
+        equipItemWhenAvailable()
+    end
+end
+checkAndBuySpeedCoil()
+local MovingAnimals = workspace:WaitForChild("MovingAnimals")
+local myPlot = nil
+
+-- 🔁 Trạng thái
+local isSelling = false
+local isBuying = false
+
+-- Cập nhật chức năng kiểm tra số lượng người chơi
+local function checkPlayerCountAndKick()
+    -- Kiểm tra số lượng người chơi trên server
+    local playerCount = #Players:GetPlayers()
+    
+    if playerCount >= 2 then
+        -- Nếu có từ 2 người chơi trở lên, kick người chơi hiện tại ra khỏi server
+        player:Kick("Đã có ít nhất 2 người chơi trên server, bạn đã bị đá ra.")
+    end
+end
+
+-- Kiểm tra và kick khi kết nối game
+task.spawn(function()
+    while true do
+        checkPlayerCountAndKick()  -- Kiểm tra số lượng người chơi và kick nếu cần
+        task.wait(5)  -- Kiểm tra mỗi 5 giây
+    end
+end)
+
+-- 📤 Hàm gửi webhook
+local function sendWebhook(petName, rarity, mutation)
+    -- 🛑 Không phải Secret thì không gửi gì cả
+    if rarity ~= "Secret" then return end
+
+    local timestamp = os.date("%Y-%m-%d %H:%M:%S")
+    local mention = "<@" .. config.PlayerDiscordId .. ">"
+
+    local payload = {
+        content = mention,
+        embeds = {{
+            title = "🔥 ĐÃ MUA PET SECRET!",
+            color = 65280,
+            fields = {
+                { name = "🐾 Tên pet", value = petName, inline = true },
+                { name = "⭐ Độ hiếm", value = rarity, inline = true },
+                { name = "🧬 Mutation", value = mutation, inline = true },
+                { name = "🕒 Thời gian", value = timestamp, inline = false },
+            }
+        }}
+    }
+
+    local req = syn and syn.request or http_request or request
+    if req then
+        local success, result = pcall(function()
+            return req({
+                Url = config.WebhookURL,
+                Method = "POST",
+                Headers = { ["Content-Type"] = "application/json" },
+                Body = HttpService:JSONEncode(payload)
+            })
+        end)
+        if success then
+            print("✅ Đã gửi webhook thành công!")
+        else
+            warn("❌ Lỗi khi gửi webhook:", result)
+        end
+    else
+        warn("❌ Executor không hỗ trợ gửi webhook.")
+    end
+end
+
+-- Anti-AFK task spawn
+task.spawn(antiAFK)
+
+-- ❌ Các tên không hợp lệ
+local bannedNames = {
+    "collect", "ready", "locked", "offline", "font", "panel", "base", "claim", "podium", "side"
+}
+
+local function formatMoney(amount)
+    if amount >= 1e9 then
+        return string.format("%.1fB", amount / 1e9)
+    elseif amount >= 1e6 then
+        return string.format("%.1fM", amount / 1e6)
+    elseif amount >= 1e3 then
+        return string.format("%.1fk", amount / 1e3)
+    else
+        return tostring(amount)
+    end
+end
+
+local function findMyPlot()
+    local closest, bestPlot = math.huge, nil
+    for _, p in pairs(workspace.Plots:GetChildren()) do
+        if p:IsA("Model") then
+            for _, part in pairs(p:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    local dist = (rootPart.Position - part.Position).Magnitude
+                    if dist < closest then
+                        closest, bestPlot = dist, p
+                    end
+                end
+            end
+        end
+    end
+    if closest <= 100 then return bestPlot end
+    warn("Không tìm thấy plot.")
+    return nil
+end
+
+local function isValidAnimal(model)
+    local name = model.Name:lower()
+    for _, b in ipairs(bannedNames) do
+        if name:find(b) then return false end
+    end
+    return true
+end
+
+local function getPetName(model)
+    local billboard = model:FindFirstChildWhichIsA("BillboardGui", true)
+    if billboard then
+        for _, label in ipairs(billboard:GetDescendants()) do
+            if label:IsA("TextLabel") and Animals[label.Text] then
+                return label.Text
+            end
+        end
+    end
+    return nil
+end
+
+local function detectMutation(animal)
+    local gui = animal:FindFirstChildWhichIsA("BillboardGui", true)
+    if gui then
+        for _, label in ipairs(gui:GetDescendants()) do
+            if label:IsA("TextLabel") then
+                local t = label.Text:lower()
+                if t:find("gold") then return "Gold"
+                elseif t:find("diamond") then return "Diamond"
+                elseif t:find("blood") or t:find("bloodrot") then return "Bloodrot"
+                elseif t:find("god") then return "God"
+                elseif t:find("mythic") then return "Mythic"
+                elseif t:find("secret") then return "Secret"
+                end
+            end
+        end
+    end
+    return "Normal"
+end
+
+local function getGeneration(index, mutation)
+    local base = Animals[index] and Animals[index].Generation or 0
+    local mod = Mutations[mutation] and Mutations[mutation].Modifier
+    return math.floor(base * (mod or 1))
+end
+
+local function getPetInfo(model)
+    local index = model:GetAttribute("Index")
+    local mutation = detectMutation(model)
+    if index and Animals[index] then
+        return {
+            model = model,
+            name = Animals[index].DisplayName or model.Name,
+            price = Animals[index].Price or 0,
+            mutation = mutation,
+            rarity = Animals[index].Rarity or "Common",
+            generation = getGeneration(index, mutation),
+        }
+    end
+    return nil
+end
+
+local function getCurrentPetCount()
+    local count = 0
+    for _, m in pairs(myPlot:GetDescendants()) do
+        if m:IsA("Model") and isValidAnimal(m) then
+            local name = getPetName(m)
+            if name and Animals[name] then
+                count += 1
+            end
+        end
+    end
+    return count
+end
+
+local function countHighRarityPets()
+    local count = 0
+    for _, m in pairs(myPlot:GetDescendants()) do
+        if m:IsA("Model") and isValidAnimal(m) then
+            local name = getPetName(m)
+            local data = name and Animals[name]
+            if data then
+                local rarity = data.Rarity or "Common"
+                if rarity == "Epic" or rarity == "Legendary" or rarity == "Mythic" or rarity == "Secret" then
+                    count += 1
+                end
+            end
+        end
+    end
+    return count
+end
+
+local lastMoveTime = tick() -- Thời gian khi bắt đầu di chuyển lần cuối
+local lastPosition = rootPart.Position -- Vị trí hiện tại của nhân vật
+local movementTimeout = 10 -- Thời gian tối đa để di chuyển trước khi kick (10 giây)
+local movementThreshold = 1 -- Ngưỡng di chuyển tối thiểu (1 đơn vị)
+
+local function safeMoveTo(targetPosition)
+    local origin = rootPart.Position
+    local direction = (targetPosition - origin).Unit * 5
+    local raycastParams = RaycastParams.new()
+    raycastParams.FilterDescendantsInstances = {character}
+    raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+
+    local result = workspace:Raycast(origin, direction, raycastParams)
+    if result and result.Instance and result.Instance:IsA("BasePart") then
+        humanoid.Jump = true
+        task.wait(0.3)
+        humanoid:MoveTo(origin + Vector3.new(2, 0, 2))  -- Di chuyển tránh tường
+        task.wait(0.5)
+    end
+
+    humanoid:MoveTo(targetPosition)  -- Di chuyển đến vị trí mục tiêu
+
+    -- Kiểm tra nếu nhân vật không di chuyển đủ xa sau 10 giây
+    local currentTime = tick()
+    local distanceMoved = (rootPart.Position - lastPosition).Magnitude
+
+    if (currentTime - lastMoveTime) >= movementTimeout then
+        if distanceMoved < movementThreshold then
+            -- Nếu vị trí không thay đổi đủ nhiều trong 10 giây, kick người chơi
+            player:Kick("Bạn đã bị cản trở quá lâu và bị đá ra khỏi server.")
+        else
+            lastMoveTime = currentTime  -- Cập nhật thời gian di chuyển
+            lastPosition = rootPart.Position  -- Cập nhật vị trí hiện tại
+        end
+    end
+end
+
+local function sellPet(model, price)
+    local part = model:FindFirstChildWhichIsA("BasePart", true)
+    if not part then return end
+
+    isSelling = true
+    safeMoveTo(part.Position)
+
+    task.delay(1.5, function()
+        local prompt = model:FindFirstChildWhichIsA("ProximityPrompt", true)
+        if not prompt then isSelling = false return end
+
+        local holding = false
+        local connection
+        local timer = 0
+
+        connection = RunService.Heartbeat:Connect(function(dt)
+            if not model.Parent then
+                if holding then prompt:InputHoldEnd() end
+                isSelling = false
+                connection:Disconnect()
+                return
+            end
+
+            local dist = (rootPart.Position - part.Position).Magnitude
+            if dist > 5 then safeMoveTo(part.Position) end
+
+            if dist <= (prompt.MaxActivationDistance or 10) and prompt.Enabled then
+                if not holding then
+                    prompt:InputHoldBegin()
+                    holding = true
+                    timer = 0
+                else
+                    timer += dt
+                    if timer >= 6 then
+                        prompt:InputHoldEnd()
+                        isSelling = false
+                        connection:Disconnect()
+                    end
+                end
+            elseif holding then
+                prompt:InputHoldEnd()
+                holding = false
+                timer = 0
+            end
+        end)
+    end)
+end
+
+local function sellOneIfFull()
+    if getCurrentPetCount() < 10 then return end
+
+    local animals = {}
+    for _, m in pairs(myPlot:GetDescendants()) do
+        if m:IsA("Model") and isValidAnimal(m) then
+            local name = getPetName(m)
+            if name and Animals[name] then
+                table.insert(animals, {
+                    model = m,
+                    price = Animals[name].Price or math.huge
+                })
+            end
+        end
+    end
+
+    table.sort(animals, function(a, b) return a.price < b.price end)
+    if #animals > 0 then
+        sellPet(animals[1].model, animals[1].price)
+    end
+end
+
+local function stealBestPet()
+    if isSelling or isBuying then return end
+
+    -- Nếu đã có 9 pet xịn, tránh mua pet thường trừ khi là rare
+    if getCurrentPetCount() == 9 and countHighRarityPets() >= 9 then
+        local found = false
+        for _, animal in ipairs(MovingAnimals:GetChildren()) do
+            if animal:IsA("Model") then
+                local info = getPetInfo(animal)
+                if info then
+                    local rarity = info.rarity
+                    if rarity == "Mythic" or rarity == "God" or rarity == "Brainrot" or rarity == "Secret" then
+                        found = true
+                        break
+                    end
+                end
+            end
+        end
+        if not found then return end
+    end
+
+    if getCurrentPetCount() >= 10 then
+        sellOneIfFull()
+        return
+    end
+
+    -- Tìm giá trị cao nhất hiện tại trong plot
+    local maxPrice = 0
+    for _, m in pairs(myPlot:GetDescendants()) do
+        if m:IsA("Model") and isValidAnimal(m) then
+            local name = getPetName(m)
+            if name and Animals[name] and Animals[name].Price then
+                local price = Animals[name].Price
+                if price > maxPrice then
+                    maxPrice = price
+                end
+            end
+        end
+    end
+
+    isBuying = true
+    local bestInfo = nil
+    for _, animal in ipairs(MovingAnimals:GetChildren()) do
+        if animal:IsA("Model") then
+            local info = getPetInfo(animal)
+            if info and info.price <= cash.Value then
+                local rarity = info.rarity
+                if rarity == "Secret" or info.price >= maxPrice then
+                    if not bestInfo or info.price > bestInfo.price then
+                        bestInfo = info
+                    end
+                end
+            end
+        end
+    end
+
+    if not bestInfo then
+        isBuying = false
+        return
+    end
+
+    local animal = bestInfo.model
+    local prompt = animal:FindFirstChildWhichIsA("ProximityPrompt", true)
+    local part = animal:FindFirstChildWhichIsA("BasePart", true)
+
+    if not prompt or not part then
+        isBuying = false
+        return
+    end
+
+    local holding = false
+    local connection
+
+    connection = RunService.Heartbeat:Connect(function()
+        if not animal:IsDescendantOf(MovingAnimals) then
+            if holding then prompt:InputHoldEnd() end
+            isBuying = false
+            connection:Disconnect()
+            return
+        end
+
+        local dist = (rootPart.Position - part.Position).Magnitude
+        if dist > 5 then safeMoveTo(part.Position) end
+
+        if dist <= (prompt.MaxActivationDistance or 10) and prompt.Enabled then
+            if not holding then
+                prompt:InputHoldBegin()
+                holding = true
+            end
+        elseif holding then
+            prompt:InputHoldEnd()
+            holding = false
+        end
+    end)
+
+    sendWebhook(bestInfo.name, bestInfo.rarity, bestInfo.mutation)
+end
+
+local function collectFromPodiums()
+    if isSelling or isBuying then return end
+
+    for i = 1, 10 do
+        local podium = myPlot:FindFirstChild("AnimalPodiums") and myPlot.AnimalPodiums:FindFirstChild(tostring(i))
+        if podium and podium:FindFirstChild("Claim") then
+            local c = podium.Claim
+            local pos = (c:IsA("Model") and (c.PrimaryPart and c.PrimaryPart.Position or c:GetPivot().Position)) or c.Position
+            safeMoveTo(pos)
+            task.wait(1)
+        end
+    end
+end
+
+task.spawn(function()
+    myPlot = findMyPlot()
+    if not myPlot then return end
+
+    while true do
+        if isBuying or isSelling then
+            -- Nếu đang mua hoặc bán, không chạy collect
+            task.wait(1)  -- Dừng lại để tránh vòng lặp vô hạn
+        else
+            -- Nếu không có hành động mua hoặc bán, tiếp tục thu thập pet
+            collectFromPodiums()
+            task.wait(2)
+        end
+
+        if not isBuying then
+            -- Nếu không đang mua, kiểm tra bán
+            sellOneIfFull()
+            task.wait(2)
+        end
+
+        if not isSelling then
+            -- Nếu không đang bán, kiểm tra mua
+            stealBestPet()
+            task.wait(0.5)
+        end
+    end
+end)
+-- GUI hiển thị
+local function createStatusGUI()
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "StatusDisplay"
+    screenGui.ResetOnSpawn = false
+    screenGui.IgnoreGuiInset = true
+    screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    screenGui.Parent = player:WaitForChild("PlayerGui")
+
+    local bg = Instance.new("Frame")
+    bg.Size = UDim2.new(1, 0, 1, 0)
+    bg.BackgroundColor3 = Color3.fromRGB(128, 0, 128)
+    bg.BackgroundTransparency = 0.25
+    bg.BorderSizePixel = 0
+    bg.Name = "Background"
+    bg.Parent = screenGui
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, -20, 1, -100)
+    label.Position = UDim2.new(0, 10, 0, 80)
+    label.BackgroundTransparency = 1
+    label.TextColor3 = Color3.new(1, 1, 1)
+    label.TextStrokeTransparency = 0
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.TextYAlignment = Enum.TextYAlignment.Top
+    label.Font = Enum.Font.GothamBold
+    label.TextSize = 28
+    label.TextWrapped = true
+    label.Text = "Đang tải..."
+    label.Parent = bg
+
+    local timeLabel = Instance.new("TextLabel")
+    timeLabel.Size = UDim2.new(1, -20, 0, 40)
+    timeLabel.Position = UDim2.new(0, 10, 0, 5)
+    timeLabel.BackgroundTransparency = 1
+    timeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    timeLabel.Font = Enum.Font.Code
+    timeLabel.TextSize = 24
+    timeLabel.TextXAlignment = Enum.TextXAlignment.Right
+    timeLabel.Text = ""
+    timeLabel.Parent = bg
+
+    local statusLabel = Instance.new("TextLabel")
+    statusLabel.Size = UDim2.new(1, -20, 0, 30)
+    statusLabel.Position = UDim2.new(0, 10, 0, 45)
+    statusLabel.BackgroundTransparency = 1
+    statusLabel.TextColor3 = Color3.fromRGB(255, 255, 127)
+    statusLabel.Font = Enum.Font.Gotham
+    statusLabel.TextSize = 22
+    statusLabel.TextXAlignment = Enum.TextXAlignment.Left
+    statusLabel.Text = "Đang tải trạng thái..."
+    statusLabel.Parent = bg
+
+    task.spawn(function()
+        while true do
+            task.wait(2)
+            if not myPlot then continue end
+
+            local lines, hasSecret, count = {}, false, 0
+            local bestPet = { name = "Không có", price = 0 }
+
+            for _, m in pairs(myPlot:GetDescendants()) do
+                if m:IsA("Model") and isValidAnimal(m) then
+                    local name = getPetName(m)
+                    if name and Animals[name] then
+                        local mutation = detectMutation(m)
+                        local price = Animals[name].Price or 0
+                        table.insert(lines, string.format("- %s [%s] %s", name, mutation, formatMoney(price)))
+                        count += 1
+                        if price > bestPet.price then
+                            bestPet = { name = name, price = price }
+                        end
+                        if Animals[name].Rarity == "Secret" then
+                            hasSecret = true
+                        end
+                    end
+                end
+            end
+
+            label.Text = string.format(
+                "Tài khoản: %s\nTiền: %s\nSố lượng Pet: %d\nPet giá trị nhất: %s (%s)\nDanh sách:\n%s",
+                player.Name,
+                formatMoney(cash.Value),
+                count,
+                bestPet.name,
+                formatMoney(bestPet.price),
+                table.concat(lines, "\n")
+            )
+
+            timeLabel.Text = os.date("%Y-%m-%d %H:%M:%S")
+
+            statusLabel.Text = isSelling and "Trạng thái: selling..."
+                or isBuying and "Trạng thái: BUYING..."
+                or "Trạng thái: COLLECTING"
+
+            bg.BackgroundColor3 = hasSecret and Color3.fromRGB(34, 139, 34) or Color3.fromRGB(128, 0, 128)
+        end
+    end)
+end
+
+createStatusGUI()
