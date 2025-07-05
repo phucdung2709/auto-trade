@@ -298,5 +298,22 @@ local function spinCam()
     end)
 end
 spinCam()
+local noclipEnabled = true
+UserInput.InputBegan:Connect(function(input, processed)
+    if processed then return end
+    if input.KeyCode == Enum.KeyCode.N then
+        noclipEnabled = not noclipEnabled
+    end
+end)
+
+RunService.Stepped:Connect(function()
+    if not noclipEnabled then return end
+    local char = player.Character or player.CharacterAdded:Wait()
+    for _, part in ipairs(char:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.CanCollide = false
+        end
+    end
+end)
 
 log("GlobalPetList Secret‑Only script loaded ✓")
