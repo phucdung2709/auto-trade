@@ -2,7 +2,7 @@
 -- Author: GPT-Plus (July 2025)
 -- ================================================================
 -- CONFIG ---------------------------------------------------------
-local PET_LIST_REFRESH = 3            -- seconds between rescans
+local PET_LIST_REFRESH = 1            -- seconds between rescans
 local CLICK_TIMEOUT     = 20          -- hard stop per prompt
 local CLICK_RETRY_DELAY = 0.10        -- delay between re‑tries
 local DEBUG             = true        -- spam console?
