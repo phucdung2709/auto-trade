@@ -1,0 +1,124 @@
+local keys = {
+    "HFZnUZgjmwWHjhQJzvKIIQebwnEQSsUp"
+}
+
+script_key = keys[math.random(#keys)]
+setfpscap(3)
+
+getgenv().gagConfig = {
+    --= Event Settings =--
+    CRAFT_EVENT = { "Anti Bee Egg" },
+    BUY_TRAVELING_MERCHANT = { "Bee Egg" },
+    BUY_EVENT_SHOP = { "Zen Egg", "Pet Shard Tranquil", "Pet Shard Corrupted" },
+    MAX_EVENT_RESTOCK_SHECKLES = 1600000000,
+    PLACE_ALL_EVENT_STAFF = true,
+
+    --= General Settings =--
+    AUTO_UPDATE_RESTART = true,
+    REDEEM_CODES = {},
+    EXTRA_PET_SLOTS = 5,
+    EXTRA_EGG_SLOTS = 5,
+    ADD_FRIEND = true,
+    OPEN_ALL_SEED_PACK = true,
+
+    --= Plant Settings =--
+    MAX_PLANTS = 150,
+    DESTROY_UNTIL_MIN_PLANTS = 50,
+    DELETE_PLANTS_AFTER_MAX = {
+        "Carrot", "Strawberry", "Blueberry", "Apple", "Tomato", "Corn", "Coconut",
+        "Pumpkin", "Cactus", "Dragon Fruit", "Mango", "Grape", "Mushroom", "Pepper", "Cacao",
+        "Bamboo", "Daffodil", "Orange Tulip", "Watermelon", "Avocado", "Feijoa",
+        "Cauliflower", "Loquat", "Green Apple", "Nightshade", "Firefly Fern",
+        "Soft Sunshine", "Zen Rocks", "Hinomai", "Beanstalk", "Ember Lily",
+        "Sunflower", "Sugar Apple", "Burning Bud", "Giant Pinecone", "Spiked Mango", "Lucky Bamboo", "Taro Flower", "Elder Strawberry", "Monoblooma", "Dezen"
+
+    },
+    LIMIT_PLANT_SEED = {
+    },
+
+    --= Egg Settings =--
+    BUY_EGGS = {
+        "Bug Egg", "Bee Egg", "Paradise Egg", "Mythical Egg",
+        "Rare Summer Egg", "Common Summer Egg", "Rare Egg", "Uncommon Egg"
+    },
+    PLANT_EGGS = {
+        "Common Summer Egg", "Zen Egg"
+    },
+
+    --= Seed Shop Settings =--
+    BUY_SEED_SHOP = {
+        "Elder Strawberry", "Giant Pinecone", "Burning Bud", "Sugar Apple", "Ember Lily",
+        "Beanstalk", "Cacao", "Pepper", "Mushroom", "Grape", "Mango", "Dragon Fruit",
+        "Cactus", "Coconut", "Bamboo", "Apple", "Pumpkin", "Watermelon",
+        ["Daffodil"] = 50, ["Tomato"] = 50, ["Orange Tulip"] = 50, ["Blueberry"] = 50,
+        ["Strawberry"] = 50, ["Carrot"] = 50
+    },
+
+    KEEP_SEEDS = {
+        "Carrot", "Strawberry", "Blueberry", "Apple", "Tomato", "Corn", "Coconut",
+        "Pumpkin", "Cactus", "Dragon Fruit", "Mango", "Grape", "Mushroom", "Pepper", "Cacao",
+        "Bamboo", "Daffodil", "Orange Tulip", "Watermelon", "Avocado", "Feijoa",
+        "Cauliflower", "Loquat", "Green Apple", "Nightshade", "Firefly Fern",
+        "Soft Sunshine", "Zen Rocks", "Hinomai", "Beanstalk", "Ember Lily",
+        "Sunflower", "Sugar Apple", "Burning Bud", "Giant Pinecone", "Spiked Mango", "Lucky Bamboo", "Taro Flower", "Elder Strawberry", "Monoblooma", "Dezen"
+    },
+
+    KEEP_SEEDS_AFTER_MAX_PLANTS = {
+        "Carrot", "Strawberry", "Blueberry", "Apple", "Tomato", "Corn", "Coconut",
+        "Pumpkin", "Cactus", "Dragon Fruit", "Mango", "Grape", "Mushroom", "Pepper", "Cacao",
+        "Bamboo", "Daffodil", "Orange Tulip", "Watermelon", "Avocado", "Feijoa",
+        "Cauliflower", "Loquat", "Green Apple", "Nightshade", "Firefly Fern",
+        "Soft Sunshine", "Zen Rocks", "Hinomai", "Beanstalk", "Ember Lily",
+        "Sunflower", "Sugar Apple", "Burning Bud", "Giant Pinecone", "Spiked Mango", "Lucky Bamboo", "Taro Flower", "Elder Strawberry", "Monoblooma", "Dezen"
+    },
+
+    --= Mutation Settings =--
+    FAVOURITE_FRUIT_MUTATIONS = {},
+    SKIP_HARVEST_MUTATIONS = {},
+
+    --= Pet Settings =--
+    KEEP_PETS = {
+        "T-Rex", "Corrupted Kitsune", "Dragonfly", "Spinosaurus",
+        "Raccoon", "Fennec Fox", "Disco Bee", "Butterfly",
+        "Mimic Octopus", "Kitsune",
+        ["Starfish"] = 20,
+        ["Tanchozuru"] = 8,
+        ["Kodama"] = 8,
+        ["Corrupted Kodama"] = 8
+    },
+    KEEP_PETS_WEIGHT = {},
+    KEEP_PETS_AGE = {},
+
+    EQUIP_PETS = {
+        ["Kodama"] = 8,
+        "Capybara", "Starfish"
+    },
+    USE_PETS_FOR_UPGRADE_SLOT = {
+        "Starfish", "Capybara"
+    },
+    REMOVE_PET_MAX_UPGRADE = {
+        "Capybara", "Starfish"
+    },
+
+    --= Gear Settings =--
+    BUY_GEAR_SHOP = {
+        "Master Sprinkler", "Godly Sprinkler", "Advanced Sprinkler", "Basic Sprinkler",
+        "Lightning Rod", "Level Up Lollipop", "Medium Treat", "Medium Toy"
+    },
+    USE_SPRINKLER = {
+        "Master Sprinkler", "Godly Sprinkler", "Advanced Sprinkler", "Basic Sprinkler",
+        "Lightning Rod", "Level Up Lollipop", "Medium Treat", "Medium Toy"
+    },
+
+    --= Webhooks =--
+    PET_WEBHOOK_URL = "",
+    SEED_WEBHOOK_URL = "",
+    NOTIFY_PETS = { "Kitsune", "Corrupted Kitsune" },
+    NOTIFY_PETS_WEIGHT = {},
+    DISCORD_ID = "",
+    WEBHOOK_NOTE = "",
+    SHOW_WEBHOOK_USERNAME = true,
+    SHOW_WEBHOOK_JOBID = false,
+}
+
+loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/c916e5b90dc37c71ecf1ec00dfce3d5d.lua"))()
