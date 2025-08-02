@@ -2,7 +2,8 @@ task.wait(3)
 getgenv().ConfigsKaitun = {
 	["Block Pet Gift"] = true,
 
-	Collect_Cooldown = 10, -- cooldown to collect fruit
+	Collect_Cooldown = 20, -- cooldown to collect fruit
+	JustFuckingCollectAll = true, -- Collect all (fruit not wait mutation)
 
 	["Low Cpu"] = true,
 	["Auto Rejoin"] = false,
@@ -31,6 +32,19 @@ getgenv().ConfigsKaitun = {
 			Select = {
 			"Serenity",
                         "Tranquil Bloom",
+    "Cacao",
+    "Sugar Apple",
+    "Ember Lily",
+    "Beanstalk",
+    "Giant Pinecone",
+    "Pepper",
+    "Burning Bud",
+    "Mushroom",
+    "Bone Blossom",
+       "Maple Apple",
+       "Grape",
+    "Mango",
+       "Coconut",
 			},
 			Lock = {
 				"Maple Apple",
@@ -53,6 +67,9 @@ getgenv().ConfigsKaitun = {
 	},
 
 	Events = {
+["Cook Event"] = {
+			Minimum_Money = 30_000_000, -- minimum money to start play this event
+		},
 		["Zen Event"] = {
 			["Restocking"] = { -- Minimumthing to restock
 				Max_Restocks_Price = 50_000_000_000,
@@ -104,6 +121,7 @@ getgenv().ConfigsKaitun = {
 	Eggs = {
 		Place = {
 			"Zen Egg",
+"Gourmet Egg"
 			"Common Summer Egg",
 		},
 		Buy = {
@@ -116,6 +134,7 @@ getgenv().ConfigsKaitun = {
 			"Bug Egg",
 			"Mythical Egg",
 			"Common Summer Egg",
+"Gourmet Egg"
 		}
 	},
 
@@ -128,7 +147,7 @@ getgenv().ConfigsKaitun = {
 			["Limit Upgrade"] = 5,
 			["Equip When Done"] = {
 				["Kodama"] = { 8, 70, 1 },
-				["Tanchozuru"] = { 8, 70, 2 },
+["Starfish"] = { 8, 76, 2 },
 			},
 		},
 		Favorite_LockedPet = true,
@@ -147,7 +166,7 @@ getgenv().ConfigsKaitun = {
 "T-Rex",
 			["Starfish"] = 20,
 			["Kodama"] = 8,
-["Tanchozuru"] = 8,
+"French Fry Ferret"
 		},
 		LockPet_Weight = 4, -- if Weight >= 10 they will locked,
 		Instant_Sell = {		
