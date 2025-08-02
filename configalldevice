@@ -2,7 +2,7 @@ task.wait(3)
 getgenv().ConfigsKaitun = {
 	["Block Pet Gift"] = true,
 
-	Collect_Cooldown = 20, -- cooldown to collect fruit
+	Collect_Cooldown = 10, -- cooldown to collect fruit
 	JustFuckingCollectAll = true, -- Collect all (fruit not wait mutation)
 
 	["Low Cpu"] = true,
@@ -121,7 +121,7 @@ getgenv().ConfigsKaitun = {
 	Eggs = {
 		Place = {
 			"Zen Egg",
-"Gourmet Egg"
+"Gourmet Egg",
 			"Common Summer Egg",
 		},
 		Buy = {
@@ -134,7 +134,7 @@ getgenv().ConfigsKaitun = {
 			"Bug Egg",
 			"Mythical Egg",
 			"Common Summer Egg",
-"Gourmet Egg"
+"Gourmet Egg",
 		}
 	},
 
@@ -166,7 +166,7 @@ getgenv().ConfigsKaitun = {
 "T-Rex",
 			["Starfish"] = 20,
 			["Kodama"] = 8,
-"French Fry Ferret"
+"French Fry Ferret",
 		},
 		LockPet_Weight = 4, -- if Weight >= 10 they will locked,
 		Instant_Sell = {		
