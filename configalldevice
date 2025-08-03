@@ -168,7 +168,7 @@ getgenv().ConfigsKaitun = {
 "Spinosaurus",
 "T-Rex",
 "Mochi Mouse",
-"Raiju"
+"Raiju",
 			["Starfish"] = 20,
 			["Kodama"] = 8,
 "French Fry Ferret",
