@@ -3,7 +3,7 @@ local keys = {
 }
 
 script_key = keys[math.random(#keys)]
-setfpscap(3)
+setfpscap(2)
 
 getgenv().gagConfig = {
     -- Event:
