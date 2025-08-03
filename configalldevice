@@ -20,15 +20,33 @@ getgenv().gagConfig = {
 
     MAX_PLANTS = 150,
     DESTROY_UNTIL_MIN_PLANTS = 0,
-    DELETE_PLANTS_AFTER_MAX = { "Carrot", "Strawberry", "Blueberry", "Tomato", "Apple", "Serenity", },
+    DELETE_PLANTS_AFTER_MAX = {
+        "Carrot","Blueberry", "Apple", "Tomato",
+        "Pumpkin", "Cactus", "Dragon Fruit", "Mango", "Grape", "Mushroom",
+        "Daffodil", "Orange Tulip", "Watermelon", "Avocado", "Feijoa",
+        "Cauliflower", "Loquat", "Green Apple", "Nightshade", "Firefly Fern",
+        "Soft Sunshine", "Zen Rocks", "Hinomai",
+        "Sunflower","Burning Bud","Spiked Mango", "Lucky Bamboo", "Taro Flower", "Elder Strawberry", "Monoblooma", "Dezen","Serenity",
+
+    },
     LIMIT_PLANT_SEED = { ["Strawberry"] = 5, ["Blueberry"] = 5, ["Apple"] = 5, ["Tomato"] = 5, ["Corn"] = 5, ["Bamboo"] = 5, ["Coconut"] = 5, ["Pumpkin"] = 5, ["Watermelon"] = 5, ["Pepper"] = 5 },
     
     BUY_EGGS = { "Bug Egg", "Bee Egg", "Paradise Egg", "Mythical Egg", "Rare Summer Egg", "Common Summer Egg", "Rare Egg", "Uncommon Egg", "Common Egg" },
     PLANT_EGGS = { "Common Summer Egg", "Zen Egg","Gourmet Egg", "Bug Egg", },
     
     BUY_SEED_SHOP = { "Elder Strawberry", "Giant Pinecone", "Burning Bud", "Sugar Apple", "Ember Lily", "Beanstalk", "Cacao", "Pepper", "Mushroom", "Grape", "Mango", "Dragon Fruit", "Cactus", ["Coconut"] = 50, ["Bamboo"] = 50, ["Apple"] = 50, ["Pumpkin"] = 50, ["Watermelon"] = 50, ["Daffodil"] = 50, ["Tomato"] = 50, ["Orange Tulip"] = 50, ["Blueberry"] = 50, ["Strawberry"] = 50, ["Carrot"] = 50 },
-    KEEP_SEEDS = { "Bone Blossom" },
-    KEEP_SEEDS_AFTER_MAX_PLANTS = { "Carrot", "Strawberry", "Blueberry", "Tomato", "Apple" },
+    KEEP_SEEDS = {         "Carrot","Blueberry", "Apple", "Tomato",
+        "Pumpkin", "Cactus", "Dragon Fruit", "Mango", "Grape", "Mushroom",
+        "Daffodil", "Orange Tulip", "Watermelon", "Avocado", "Feijoa",
+        "Cauliflower", "Loquat", "Green Apple", "Nightshade", "Firefly Fern",
+        "Soft Sunshine", "Zen Rocks", "Hinomai",
+        "Sunflower","Burning Bud","Spiked Mango", "Lucky Bamboo", "Taro Flower", "Elder Strawberry", "Monoblooma", "Dezen","Serenity",},
+    KEEP_SEEDS_AFTER_MAX_PLANTS = {         "Carrot","Blueberry", "Apple", "Tomato",
+        "Pumpkin", "Cactus", "Dragon Fruit", "Mango", "Grape", "Mushroom",
+        "Daffodil", "Orange Tulip", "Watermelon", "Avocado", "Feijoa",
+        "Cauliflower", "Loquat", "Green Apple", "Nightshade", "Firefly Fern",
+        "Soft Sunshine", "Zen Rocks", "Hinomai",
+        "Sunflower","Burning Bud","Spiked Mango", "Lucky Bamboo", "Taro Flower", "Elder Strawberry", "Monoblooma", "Dezen","Serenity",},
     
     FAVOURITE_FRUIT_MUTATIONS = {},  -- Stop Autosell
     SKIP_HARVEST_MUTATIONS = {},  -- Stop Harvest
