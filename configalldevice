@@ -83,7 +83,7 @@ getgenv().ConfigsKaitun = {
 
 				-- // thing to skip doing
 				Skip_Fox = true, -- Skip The Middle Fox Trade (Corrupted Kitsune)
-				Skip_Corrupted_OldMan = true, -- Skip The OldMan Trade (Kodama)
+				Skip_Corrupted_OldMan = false, -- Skip The OldMan Trade (Kodama)
 				-- If u need to skip Tranquill OldMan Set "First Upgrade Tree" To 0 and Max Chi To 99999
 			}
 		},
@@ -98,6 +98,8 @@ getgenv().ConfigsKaitun = {
 		Shop = {
 			"Zen Egg",
 			"Zen Seed Pack",
+                        "Raiju"
+                       "Pet Shard Corrupted",
 		},
 		Start_Do_Honey = 2_000_000 -- start trade fruit for honey at money
 	},
@@ -114,7 +116,7 @@ getgenv().ConfigsKaitun = {
 			"Medium Toy",
 		},
 		Lock = {
-			"Lightning Rod",
+			"idk",
 		},
 	},
 
@@ -122,6 +124,7 @@ getgenv().ConfigsKaitun = {
 		Place = {
 			"Zen Egg",
 "Gourmet Egg",
+			"Bug Egg",
 			"Common Summer Egg",
 		},
 		Buy = {
@@ -165,6 +168,7 @@ getgenv().ConfigsKaitun = {
 "Spinosaurus",
 "T-Rex",
 "Mochi Mouse",
+"Raiju"
 			["Starfish"] = 20,
 			["Kodama"] = 8,
 "French Fry Ferret",
