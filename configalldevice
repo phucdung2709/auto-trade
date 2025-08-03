@@ -19,7 +19,7 @@ getgenv().gagConfig = {
     OPEN_ALL_SEED_PACK = true,
 
     MAX_PLANTS = 150,
-    DESTROY_UNTIL_MIN_PLANTS = 50,
+    DESTROY_UNTIL_MIN_PLANTS = 0,
     DELETE_PLANTS_AFTER_MAX = { "Carrot", "Strawberry", "Blueberry", "Tomato", "Apple", "Serenity", },
     LIMIT_PLANT_SEED = { ["Strawberry"] = 5, ["Blueberry"] = 5, ["Apple"] = 5, ["Tomato"] = 5, ["Corn"] = 5, ["Bamboo"] = 5, ["Coconut"] = 5, ["Pumpkin"] = 5, ["Watermelon"] = 5, ["Pepper"] = 5 },
     
