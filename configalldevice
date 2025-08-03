@@ -204,4 +204,7 @@ getgenv().ConfigsKaitun = {
 }
 License = "PTRfENdAqBJGmjQ43XtPqXtNBLG9wCDB"
 
-loadstring(game:HttpGet('https://raw.githubusercontent.com/Real-Aya/Loader/main/Init.lua'))()
+repeat
+    local success, err = pcall(function() loadstring(game:HttpGet('https://raw.githubusercontent.com/Real-Aya/Loader/main/Init.lua'))()"))() end)
+    task.wait(20)
+until success
