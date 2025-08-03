@@ -52,7 +52,7 @@ getgenv().gagConfig = {
 
     EQUIP_PETS = { ["Capybara"] = 1, ["Starfish"] = 8, },
     USE_PETS_FOR_UPGRADE_SLOT = { "Starfish" },
-    REMOVE_PET_MAX_UPGRADE = { "Capybara", "Starfish" },  -- Unequip from garden
+    REMOVE_PET_MAX_UPGRADE = {  },  -- Unequip from garden
 
  BUY_GEAR_SHOP = {
         "Master Sprinkler", "Godly Sprinkler", "Advanced Sprinkler", "Basic Sprinkler",
