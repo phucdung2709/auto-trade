@@ -125,7 +125,8 @@ getgenv().ConfigsKaitun = {
 			},
 			["Limit Upgrade"] = 5,
 			["Equip When Done"] = { 
-				["Sunny-Side Chicken"] = { 8, 100,1 },
+                ["Spaghetti Sloth"] = { 4, 100,1 },
+				["Sunny-Side Chicken"] = { 4, 100,2 },
 			},
 		},
 		Favorite_LockedPet = true,
@@ -142,6 +143,7 @@ getgenv().ConfigsKaitun = {
 "Spinosaurus",
 "T-Rex",
 "Lobster Thermidor",
+["Spaghetti Sloth"] = 4,
 ["Sunny-Side Chicken"] = 8,
 ["Starfish"] = 25,
 "French Fry Ferret",
