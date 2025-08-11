@@ -169,10 +169,11 @@ getgenv().ConfigsKaitun = {
 			"Lobster Thermidor",
 			["Spaghetti Sloth"] = 4,
 			["Sunny-Side Chicken"] = 8,
-			["Starfish"] = 25,
+			["Starfish"] = 15,
 			"French Fry Ferret",
 			"Rainbow Hotdog Daschund",
 			["Gorilla Chef"] = 5,
+            ["Hotdog Daschund"] = 4,
 		},
 		LockPet_Weight = 6, -- comment ghi 10 nhưng bạn set 6
 		Instant_Sell = {
