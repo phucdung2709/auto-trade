@@ -15,7 +15,7 @@ getgenv().ConfigsKaitun = {
 		["Safe Tree"] = {
 			["Tomato"] = 5,
 			["Blood Banana"] = 5,
-			["Bamboo"] = 5,
+			["Bamboo"] = 100,
 			["Mango"] = 5,
 			["Pineapple"] = 5,
 			["Beanstalk"] = 5,
@@ -125,9 +125,11 @@ getgenv().ConfigsKaitun = {
 	Eggs = {
 		Place = {
 			"Gourmet Egg",
+            "Zen Egg",
+            "Common Summer Egg",
 			"Bug Egg",
-			"Zen Egg",
-			"Common Summer Egg",
+			"Paradise Egg",
+            "Mythical Egg",
 		},
 		Buy = {
 			"Common Summer Egg",
@@ -137,6 +139,7 @@ getgenv().ConfigsKaitun = {
 			"Anti Bee Egg",
 			"Night Egg",
 			"Bug Egg",
+            "Mythical Egg",
 		}
 	},
 
@@ -148,9 +151,9 @@ getgenv().ConfigsKaitun = {
 			},
 			["Limit Upgrade"] = 5,
 			["Equip When Done"] = {
-                ["Gorilla Chef"] = { 8, 100, 1 },
-				["Spaghetti Sloth"] = { 8, 100, 2 },
-				["Sunny-Side Chicken"] = { 8, 100, 3 },
+                ["Gorilla Chef"] = { 3, 100, 2 },
+				["Spaghetti Sloth"] = { 8, 100, 3 },
+				["Sunny-Side Chicken"] = { 5, 100, 1 },
 			},
 		},
 		Favorite_LockedPet = true,
@@ -175,6 +178,7 @@ getgenv().ConfigsKaitun = {
 			"Rainbow Hotdog Daschund",
 			["Gorilla Chef"] = 5,
             ["Hotdog Daschund"] = 4,
+            ["Koi"] = 8,
 		},
 		LockPet_Weight = 6, -- comment ghi 10 nhưng bạn set 6
 		Instant_Sell = {
@@ -201,6 +205,8 @@ getgenv().ConfigsKaitun = {
 				"Lobster Thermidor",
 				"King Cabbage",
 				"Kitsune",
+                "Mimic Octopus",
+			    "Red Fox",
 			},
 			Pet_Weight_Noti = true,
 		}
