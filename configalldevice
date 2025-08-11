@@ -147,13 +147,13 @@ getgenv().ConfigsKaitun = {
 		["Start Delete Pet At"] = 40,
 		["Upgrade Slot"] = {
 			["Pet"] = {
-				["Starfish"] = { 5, 76, 1, true }, -- last = auto equip
+				["Starfish"] = { 8, 76, 1, true }, -- last = auto equip
 			},
 			["Limit Upgrade"] = 5,
 			["Equip When Done"] = {
                 ["Gorilla Chef"] = { 4, 100, 2 },
-				["Spaghetti Sloth"] = { 8, 100, 3 },
-				["Sunny-Side Chicken"] = { 4, 100, 1 },
+				["Spaghetti Sloth"] = { 4, 100, 1 },
+				["Sunny-Side Chicken"] = { 4, 100, 3 },
 			},
 		},
 		Favorite_LockedPet = true,
@@ -176,7 +176,7 @@ getgenv().ConfigsKaitun = {
 			["Starfish"] = 15,
 			"French Fry Ferret",
 			"Rainbow Hotdog Daschund",
-			["Gorilla Chef"] = 5,
+			["Gorilla Chef"] = 4,
             ["Hotdog Daschund"] = 4,
             ["Koi"] = 8,
 		},
