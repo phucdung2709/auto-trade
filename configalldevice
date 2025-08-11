@@ -151,9 +151,9 @@ getgenv().ConfigsKaitun = {
 			},
 			["Limit Upgrade"] = 5,
 			["Equip When Done"] = {
-                ["Gorilla Chef"] = { 3, 100, 2 },
+                ["Gorilla Chef"] = { 4, 100, 2 },
 				["Spaghetti Sloth"] = { 8, 100, 3 },
-				["Sunny-Side Chicken"] = { 5, 100, 1 },
+				["Sunny-Side Chicken"] = { 4, 100, 1 },
 			},
 		},
 		Favorite_LockedPet = true,
