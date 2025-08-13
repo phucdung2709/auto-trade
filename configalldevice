@@ -1,7 +1,7 @@
 getgenv().ConfigsKaitun = {
 	["Block Pet Gift"] = true,
 	Beta_Fix_Data_Sync = false,
-	Collect_Cooldown = 60, -- cooldown to collect fruit
+	Collect_Cooldown = 120, -- cooldown to collect fruit
 	JustFuckingCollectAll = false, -- Collect all (fruit not wait mutation)
 
 	["Low Cpu"] = true,
@@ -9,8 +9,8 @@ getgenv().ConfigsKaitun = {
 	["Rejoin When Update"] = false,
 
 	["Limit Tree"] = {
-		["Limit"] = 200,
-		["Destroy Untill"] = 100,
+		["Limit"] = 120,
+		["Destroy Untill"] = 50,
 
 		["Safe Tree"] = {
 			["Tomato"] = 5,
@@ -46,6 +46,7 @@ getgenv().ConfigsKaitun = {
 			["Hive Fruit"] = 5,
 			["Lilac"] = 5,
 			["Soft Sunshine"] = 5,
+            ["King Cabbage "] = 5,
 		}
 	},
 
@@ -124,8 +125,8 @@ getgenv().ConfigsKaitun = {
 
 	Eggs = {
 		Place = {
-			"Gourmet Egg",
             "Zen Egg",
+			"Gourmet Egg",
             "Common Summer Egg",
 			"Bug Egg",
 			"Paradise Egg",
@@ -151,9 +152,8 @@ getgenv().ConfigsKaitun = {
 			},
 			["Limit Upgrade"] = 5,
 			["Equip When Done"] = {
-                ["Gorilla Chef"] = { 8, 100, 1 },
-				["Spaghetti Sloth"] = { 4, 100, 2 },
-				["Sunny-Side Chicken"] = { 1, 100, 3 },
+                ["Gorilla Chef"] = { 7, 100, 1 },
+				["Sunny-Side Chicken"] = { 1, 100, 2 },
 			},
 		},
 		Favorite_LockedPet = true,
