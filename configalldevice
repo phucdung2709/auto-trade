@@ -57,17 +57,10 @@ getgenv().ConfigsKaitun = {
 		},
 		Place = {
 			Mode = "Lock", -- Select , Lock
-			Select = { "idk" }, -- ⚠️ tên này không tồn tại sẽ gây skip
+			Select = {
+				"Carrot"
+			},
 			Lock = {
-				"idk",
-				"idk",
-				"idk",
-				"idk",
-				"idk",
-				"idk",
-				"idk",
-				"idk",
-				"idk",
 			}
 		}
 	},
