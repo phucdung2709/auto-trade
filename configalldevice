@@ -178,6 +178,7 @@ getgenv().ConfigsKaitun = {
 			["Gorilla Chef"] = 8,
             ["Hotdog Daschund"] = 4,
             ["Koi"] = 8,
+            "Raiju",
 		},
 		LockPet_Weight = 6, -- comment ghi 10 nhưng bạn set 6
 		Instant_Sell = {
