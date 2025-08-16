@@ -82,4 +82,7 @@ getgenv().gagConfig = {
     SHOW_WEBHOOK_JOBID = true,
 }
 
-loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/6cb882027ef5de19462b160764dcfb53.lua"))()
+repeat
+    local success, err = pcall(function() loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/a2234a9cfbe480dfed9eaf6c00a012ca.lua"))() end)
+    task.wait(20)
+until success
