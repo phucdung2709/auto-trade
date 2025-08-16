@@ -65,7 +65,7 @@ getgenv().gagConfig = {
     BUY_GEAR_SHOP = { "Grandmaster Sprinkler", "Master Sprinkler", "Godly Sprinkler", "Advanced Sprinkler", "Basic Sprinkler", "Trading Ticket" },
     USE_SPRINKLER = { "Basic Sprinkler", "Master Sprinkler", "Godly Sprinkler", "Advanced Sprinkler", "Grandmaster Sprinkler" },
 
-    PET_WEBHOOK_URL = "",
+    PET_WEBHOOK_URL = "https://discord.com/api/webhooks/1273119636908544082/d382-d6UJjmeTcSuqJAgyZuPodyFvg1GV8q4Us3LJFdTDX75MlWjTOINHkzBxT0Ult2P",
     SEED_WEBHOOK_URL = "", 
     NOTIFY_PETS = { "French Fry Ferret",
 				"Rainbow Hotdog Daschund",
@@ -77,7 +77,7 @@ getgenv().gagConfig = {
                 "Golden Goose", },
     NOTIFY_PETS_WEIGHT = 6,
     DISCORD_ID = "1199217337144987649",
-    WEBHOOK_NOTE = "https://discord.com/api/webhooks/1273119636908544082/d382-d6UJjmeTcSuqJAgyZuPodyFvg1GV8q4Us3LJFdTDX75MlWjTOINHkzBxT0Ult2P",
+    WEBHOOK_NOTE = "",
     SHOW_WEBHOOK_USERNAME = true,
     SHOW_WEBHOOK_JOBID = true,
 }
