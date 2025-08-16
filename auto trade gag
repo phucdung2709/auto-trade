@@ -4,7 +4,7 @@ getgenv().Config = {
         "French Fry Ferret",
         "Lobster Thermidor",
     },
-    ["UUID"] = "",
+    ["UUID"] = "phucdung2709autotrade",
     ["Url"] = "http://103.249.200.78:3000"
 }
 repeat
