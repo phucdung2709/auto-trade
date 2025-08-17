@@ -16,7 +16,7 @@ getgenv().gagConfig = {
     ADD_FRIEND = true,
     OPEN_ALL_SEED_PACK = true,
 
-    MAX_PLANTS = 200,
+    MAX_PLANTS = 150,
     DESTROY_UNTIL_MIN_PLANTS = 100,
     DELETE_PLANTS_AFTER_MAX = { "Carrot" },
     
