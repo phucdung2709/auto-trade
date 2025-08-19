@@ -52,11 +52,12 @@ getgenv().gagConfig = {
             ["Hotdog Daschund"] = 4,
             ["Koi"] = 8,
             "Raiju",
-            "Golden Goose", },
+            "Golden Goose",
+            "Seal", },
     KEEP_PETS_WEIGHT = 7,
     KEEP_PETS_AGE = 76,
 
-    EQUIP_PETS = { ["Starfish"] = 8, ["Sunny-Side Chicken"] = 5,["Dairy Cow"] = 8},
+    EQUIP_PETS = { ["Starfish"] = 8,["Seal"] = 8, ["Sunny-Side Chicken"] = 5,["Dairy Cow"] = 8},
     USE_PETS_FOR_UPGRADE_SLOT = { "Starfish" },
     REMOVE_PET_MAX_UPGRADE = { "Capybara", "Starfish" },
 
