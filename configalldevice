@@ -3,11 +3,12 @@ setfpscap(2)
 
 getgenv().gagConfig = {
     -- Event:
-    CRAFT_EVENT = { "Anti Bee Egg" },
-    BUY_TRAVELING_MERCHANT = { "Bee Egg"},
+    CRAFT_EVENT = { "Anti Bee Egg", "Skyroot Chest","Sprout Egg", },
+    BUY_TRAVELING_MERCHANT = { "Bee Egg","Rare Summer Egg","Paradise Egg", "Common Summer Egg",},
     MAX_EVENT_RESTOCK_SHECKLES = 480_000_000_00,  -- Restock stop at 48m
     BUY_EVENT_SHOP = { "Sprout Egg", "Sprout Seed Pack", },
     PLANT_EVENT_TREES = true,  -- This config will replace most plant related config
+    GET_HONEY = true,
     
     -- General:
     AUTO_UPDATE_RESTART = true,
@@ -17,13 +18,14 @@ getgenv().gagConfig = {
     ADD_FRIEND = true,
     OPEN_ALL_SEED_PACK = true,
     
-    BUY_EGGS = { "Bug Egg", "Bee Egg", "Paradise Egg", "Mythical Egg", "Rare Summer Egg", "Common Summer Egg", "Rare Egg", "Uncommon Egg","Rare Summer Egg", },
+    BUY_EGGS = { "Bug Egg", "Bee Egg", "Paradise Egg", "Mythical Egg", "Rare Summer Egg", "Common Summer Egg", "Rare Egg", "Uncommon Egg","Rare Summer Egg","Legendary Egg", },
     PLANT_EGGS = {  "Zen Egg",
             "Sprout Egg",
 			"Gourmet Egg",
             "Common Summer Egg",
 			"Bug Egg",
 			"Paradise Egg",
+        "Rare Egg",
     "Rare Summer Egg", },
     
     BUY_SEED_SHOP = { "Romanesco", "Elder Strawberry", "Giant Pinecone", "Burning Bud", "Sugar Apple", "Ember Lily", "Beanstalk", "Cacao", "Pepper", "Mushroom", "Grape", "Mango", "Dragon Fruit", "Cactus", ["Coconut"] = 50, ["Bamboo"] = 50, ["Apple"] = 50, ["Pumpkin"] = 50, ["Watermelon"] = 50, ["Daffodil"] = 50, ["Tomato"] = 50, ["Orange Tulip"] = 50, ["Blueberry"] = 50, ["Strawberry"] = 50, ["Carrot"] = 50 },
@@ -52,11 +54,13 @@ getgenv().gagConfig = {
             ["Koi"] = 8,
             "Raiju",
             "Golden Goose",
-            "Seal", },
+            "Seal",
+            ["Rooster"]=8,
+        "Griffin", },
     KEEP_PETS_WEIGHT = 7,
     KEEP_PETS_AGE = 76,
 
-    EQUIP_PETS = { ["Starfish"] = 8,["Seal"] = 8, ["Sunny-Side Chicken"] = 5,["Dairy Cow"] = 8},
+    EQUIP_PETS = { ["Starfish"] = 8,["Rooster"]=8, ["Sunny-Side Chicken"] = 5,["Dairy Cow"] = 8},
     USE_PETS_FOR_UPGRADE_SLOT = { "Starfish" },
     REMOVE_PET_MAX_UPGRADE = { "Capybara", "Starfish" },
 
@@ -92,7 +96,8 @@ getgenv().gagConfig = {
 				"Kitsune",
                 "Mimic Octopus",
 			    "Red Fox",
-                "Golden Goose", },
+                "Golden Goose",
+            "Griffin" },
     NOTIFY_PETS_WEIGHT = 7,
     DISCORD_ID = "1199217337144987649",
     WEBHOOK_NOTE = "ĐỊT MẸ MÀY RA PET KÌA",
