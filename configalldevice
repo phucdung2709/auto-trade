@@ -16,7 +16,7 @@ getgenv().gagConfig = {
     EXTRA_PET_SLOTS = 5,
     EXTRA_EGG_SLOTS = 5,
     ADD_FRIEND = true,
-    OPEN_ALL_SEED_PACK = true,
+    OPEN_ALL_SEED_PACK = false,
     
     BUY_EGGS = { "Bug Egg", "Bee Egg", "Paradise Egg", "Mythical Egg", "Rare Summer Egg", "Common Summer Egg", "Rare Egg", "Uncommon Egg","Rare Summer Egg","Legendary Egg", },
     PLANT_EGGS = {  "Zen Egg",
