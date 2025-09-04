@@ -1,112 +1,149 @@
-script_key="nvCKTGafsVMlzjpmaxOYzbCoLbUmInby";
-setfpscap(2)
+--================= ONE-LOADER (MAIN + DELAYED FPS) =================--
 
-getgenv().gagConfig = {
-    -- Event:
-    CRAFT_EVENT = { "Anti Bee Egg", "Skyroot Chest","Sprout Egg", },
-    BUY_TRAVELING_MERCHANT = { "Bee Egg","Rare Summer Egg","Paradise Egg", "Common Summer Egg",},
-    MAX_EVENT_RESTOCK_SHECKLES = 480_000_000_00,  -- Restock stop at 48m
-    BUY_EVENT_SHOP = { "Sprout Egg", "Sprout Seed Pack", },
-    PLANT_EVENT_TREES = true,  -- This config will replace most plant related config
-    GET_HONEY = true,
-    
-    -- General:
-    AUTO_UPDATE_RESTART = false,
-    REDEEM_CODES = {},
-    EXTRA_PET_SLOTS = 5,
-    EXTRA_EGG_SLOTS = 5,
-    ADD_FRIEND = true,
-    OPEN_ALL_SEED_PACK = false,
-    
-    BUY_EGGS = { "Bug Egg", "Bee Egg", "Paradise Egg", "Mythical Egg", "Rare Summer Egg", "Common Summer Egg", "Rare Egg", "Uncommon Egg","Rare Summer Egg","Legendary Egg", },
-    PLANT_EGGS = {  "Zen Egg",
-            "Sprout Egg",
-			"Gourmet Egg",
-            "Common Summer Egg",
-			"Bug Egg",
-			"Paradise Egg",
-        "Rare Egg",
-    "Rare Summer Egg", },
-    
-    BUY_SEED_SHOP = { "Romanesco", "Elder Strawberry", "Giant Pinecone", "Burning Bud", "Sugar Apple", "Ember Lily", "Beanstalk", "Cacao", "Pepper", "Mushroom", "Grape", "Mango", "Dragon Fruit", "Cactus", ["Coconut"] = 50, ["Bamboo"] = 50, ["Apple"] = 50, ["Pumpkin"] = 50, ["Watermelon"] = 50, ["Daffodil"] = 50, ["Tomato"] = 50, ["Orange Tulip"] = 50, ["Blueberry"] = 50, ["Strawberry"] = 50, ["Carrot"] = 50 },
-    KEEP_SEEDS = { },
-    KEEP_SEEDS_AFTER_MAX_PLANTS = {},
-    
-    FAVOURITE_FRUIT_MUTATIONS = {},
-    SKIP_HARVEST_MUTATIONS = {},
+--== MAIN SCRIPT (GIỮ NGUYÊN) ==--
+local MAIN_SCRIPT = [==[
+repeat wait() until game:IsLoaded() and game.Players.LocalPlayer
+getgenv().Key = "146c3e7ff31904fc45d4e2e4"
+    getgenv().SettingFarm ={
+        ["Multiple Attack"] = true, --// this is fast attack added by me
+        ["Hide UI"] = true,
+        ["Reset Teleport"] = {
+            ["Enabled"] = false,
+            ["Delay Reset"] = 3,
+            ["Item Dont Reset"] = {
+                ["Fruit"] = {
+                    ["Enabled"] = true,
+                    ["All Fruit"] = true, 
+                    ["Select Fruit"] = {
+                        ["Enabled"] = false,
+                        ["Fruit"] = {},
+                    },
+                },
+            },
+        },
+        ["White Screen"] = false,
+        ["Lock Fps"] = {
+            ["Enabled"] = true,
+            ["FPS"] = 20,
+        },
+        ["Get Items"] = {
+            ["Saber"] = true,
+            ["Godhuman"] =  true,
+            ["Skull Guitar"] = true,
+            ["Mirror Fractal"] = true,
+            ["Cursed Dual Katana"] = true,
+            ["Upgrade Race V2-V3"] = true,
+            ["Auto Pull Lever"] = true,
+            ["Shark Anchor"] = true, --- if have cdk,sg,godhuman
+        },
+        ["Get Rare Items"] = {
+            ["Rengoku"] = true,
+            ["Dragon Trident"] = true, 
+            ["Pole (1st Form)"] = true,
+            ["Gravity Blade"]  = true,
+        },
+        ["Farm Fragments"] = {
+            ["Enabled"]  = true,
+            ["Fragment"] = 25000,
+        },
+        ["Auto Chat"] = {
+            ["Enabled"] = false,
+            ["Text"] = "sell god max dms dis luxu_75840",
+        },
+        ["Auto Summon Rip Indra"] = true, --- auto buy haki and craft haki legendary 
+        ["Select Hop"] = { -- 70% will have it
+            ["Hop Server If Have Player Near"] = true, 
+            ["Hop Find Rip Indra Get Valkyrie Helm or Get Tushita"] = true, 
+            ["Hop Find Dough King Get Mirror Fractal"] = true,
+            ["Hop Find Raids Castle [CDK]"] = true,
+            ["Hop Find Cake Queen [CDK]"] = true,
+            ["Hop Find Soul Reaper [CDK]"] = true,
+            ["Hop Find Darkbeard [SG]"] = true,
+            ["Hop Find Mirage [ Pull Lever ]"] = true,
+        },
+        ["Farm Mastery"] = {
+            ["Melee"] = true,
+            ["Sword"] = true,
+        },
+        ["Buy Haki"] = {
+            ["Enhancement"] = true,
+            ["Skyjump"] = true,
+            ["Flash Step"] = true,
+            ["Observation"] = true,
+        },
+        ["Sniper Fruit Shop"] = {
+            ["Enabled"] = true, -- Auto Buy Fruit in Shop Mirage and Normal
+            ["Fruit"] = {"Kitsune-Kitsune", "Leopard-Leopard", "Dragon-Dragon", "Control-Control", "Dough-Dough", "T-Rex-T-Rex", "Mammoth-Mammoth", "Buddha-Buddha", "Lightning-Lightning", "Yeti-Yeti", "Gas-Gas"},
+        },
+        ["Lock Fruit"] = {"Kitsune-Kitsune", "Leopard-Leopard", "Dragon-Dragon", "Control-Control", "Dough-Dough", "T-Rex-T-Rex", "Mammoth-Mammoth", "Buddha-Buddha", "Lightning-Lightning", "Yeti-Yeti", "Gas-Gas"},
+        ["Webhook"] = {
+            ["Enabled"] = false,
+            ["WebhookUrl"] = "",
+        }
+    }
+loadstring(game:HttpGet("https://raw.githubusercontent.com/obiiyeuem/vthangsitink/main/BananaCat-kaitunBF.lua"))()
+task.delay(6,function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/SkibidiHub111/BloxFruit/refs/heads/main/ConfigBanana"))()
+end)
+]==]
 
-    KEEP_PETS = { "Corrupted Kitsune",
-			"Kitsune",
-			"Dragonfly",
-			"Raccoon",
-			"Fennec Fox",
-			"Mimic Octopus",
-			"Red Fox",
-			"Blood Owl",
-			"Spinosaurus",
-			"T-Rex",
-			"Lobster Thermidor",
-			["Dairy Cow"] = 3,
-			["Sunny-Side Chicken"] = 8,
-			["Starfish"] = 15,
-			"French Fry Ferret",
-            ["Hotdog Daschund"] = 4,
-            ["Koi"] = 8,
-            "Raiju",
-            "Golden Goose",
-            "Seal",
-            ["Rooster"]=8,
-        "Griffin",
-    "Capybara", },
-    KEEP_PETS_WEIGHT = 7,
-    KEEP_PETS_AGE = 76,
+task.spawn(function()
+    local f, err = loadstring(MAIN_SCRIPT, "MainWrapper")
+    if not f then warn("[MAIN] load error: ", err) return end
+    pcall(f)
+end)
 
-    EQUIP_PETS = { ["Starfish"] = 8,["Capybara"]=8,["Rooster"]=8,["Seal"] = 3, ["Sunny-Side Chicken"] = 5,["Dairy Cow"] = 8},
-    USE_PETS_FOR_UPGRADE_SLOT = { "Starfish","Rooster","Sunny-Side Chicken","Dairy Cow","Capybara", },
-    REMOVE_PET_MAX_UPGRADE = { "Capybara", "Starfish" },
+--== FPS OVERLAY: DELAY 10 GIÂY, TRÊN GIỮA (MÀU ĐỎ) ==--
+task.delay(10, function()
+    local RS = game:GetService("RunService")
+    local CoreGui = game:GetService("CoreGui")
 
-    BUY_GEAR_SHOP = { "Watering Can",
-			"Master Sprinkler",
-			"Trading Ticket",
-			"Godly Sprinkler",
-			"Grandmaster Sprinkler", -- sửa chính tả
-			"Advanced Sprinkler",
-			"Basic Sprinkler",
-			"Lightning Rod",
-			"Level Up Lollipop",
-			"Medium Treat",
-			"Medium Toy", },
-    USE_SPRINKLER = { "Watering Can",
-			"Master Sprinkler",
-			"Trading Ticket",
-			"Godly Sprinkler",
-			"Grandmaster Sprinkler", -- sửa chính tả
-			"Advanced Sprinkler",
-			"Basic Sprinkler",
-			"Lightning Rod",
-			"Level Up Lollipop",
-			"Medium Treat",
-			"Medium Toy", },
+    local old = CoreGui:FindFirstChild("FPSOverlay_ChatGPT")
+    if old then old:Destroy() end
 
-    PET_WEBHOOK_URL = "https://discord.com/api/webhooks/1273119636908544082/d382-d6UJjmeTcSuqJAgyZuPodyFvg1GV8q4Us3LJFdTDX75MlWjTOINHkzBxT0Ult2P",
-    SEED_WEBHOOK_URL = "", 
-    NOTIFY_PETS = { "French Fry Ferret",
-				"Rainbow Hotdog Daschund",
-				"Lobster Thermidor",
-				"King Cabbage",
-				"Kitsune",
-                "Mimic Octopus",
-			    "Red Fox",
-                "Golden Goose",
-            "Griffin" },
-    NOTIFY_PETS_WEIGHT = 7,
-    DISCORD_ID = "1199217337144987649",
-    WEBHOOK_NOTE = "ĐỊT MẸ MÀY RA PET KÌA",
-    SHOW_WEBHOOK_USERNAME = true,
-    SHOW_WEBHOOK_JOBID = true,
-}
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "FPSOverlay_ChatGPT"
+    gui.IgnoreGuiInset = true
+    gui.ResetOnSpawn = false
+    gui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+    gui.DisplayOrder = 999999
+    gui.Parent = CoreGui
 
-repeat
-    local success, err = pcall(function() loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/a2234a9cfbe480dfed9eaf6c00a012ca.lua"))() end)
-    task.wait(30)
-until success
+    local lbl = Instance.new("TextLabel")
+    lbl.AnchorPoint = Vector2.new(0.5, 0)
+    lbl.Position = UDim2.new(0.5, 0, 0, 10) -- giữa trên
+    lbl.Size = UDim2.new(0, 300, 0, 80)
+    lbl.BackgroundTransparency = 1
+    lbl.Text = "FPS"
+    lbl.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.ExtraBold)
+    lbl.TextColor3 = Color3.fromRGB(255, 0, 0)     -- << MÀU ĐỎ
+    lbl.TextStrokeTransparency = 0.25              -- viền rõ hơn
+    lbl.TextStrokeColor3 = Color3.fromRGB(0, 0, 0) -- viền đen
+    lbl.TextXAlignment = Enum.TextXAlignment.Center
+    lbl.TextYAlignment = Enum.TextYAlignment.Top
+    lbl.TextScaled = true
+    lbl.ZIndex = 1001
+    lbl.Parent = gui
+
+    local shadow = lbl:Clone()
+    shadow.TextColor3 = Color3.fromRGB(0, 0, 0)
+    shadow.TextTransparency = 0.2
+    shadow.Position = UDim2.new(0.5, 2, 0, 12)
+    shadow.ZIndex = 1000
+    shadow.Parent = gui
+
+    local smoothed, accum = 60, 0
+    RS.RenderStepped:Connect(function(dt)
+        local fps = 1 / math.max(dt, 1/1000)
+        smoothed = smoothed + (fps - smoothed) * 0.12
+        accum += dt
+        if accum >= 0.1 then
+            local n = tostring(math.floor(smoothed + 0.5))
+            lbl.Text = n
+            shadow.Text = n
+            accum = 0
+        end
+    end)
+end)
+
+--================= /ONE-LOADER =================--
