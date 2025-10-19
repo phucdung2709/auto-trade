@@ -54,8 +54,8 @@ getgenv().gagConfig = {
     KEEP_PETS_AGE = 76,
 
     EQUIP_PETS = { ["Rooster"] = 8,["Barn Owl"] = 8, ["Ghost Bear"] = 8,  "Capybara", "Chicken"},
-    USE_PETS_FOR_UPGRADE_SLOT = { "Chicken", "Rooster" },
-    REMOVE_PET_MAX_UPGRADE = { "Capybara", "Chicken" }, 
+    USE_PETS_FOR_UPGRADE_SLOT = { "Chicken", "Rooster","Dairy Cow" },
+    REMOVE_PET_MAX_UPGRADE = { "Capybara", "Chicken","Dairy Cow" }, 
 
     BUY_GEAR_SHOP = { "Grandmaster Sprinkler", "Master Sprinkler", "Godly Sprinkler", "Advanced Sprinkler", "Basic Sprinkler", "Trading Ticket", "Watering Can", "Levelup Lollipop" },
     USE_SPRINKLER = { "Basic Sprinkler", "Master Sprinkler", "Godly Sprinkler", "Advanced Sprinkler", "Grandmaster Sprinkler" },
