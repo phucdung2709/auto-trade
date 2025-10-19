@@ -61,3 +61,18 @@ getgenv().gagConfig = {
 }
 
 loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/c916e5b90dc37c71ecf1ec00dfce3d5d.lua"))()
+task.spawn(function()
+    repeat task.wait() until game:IsLoaded()
+    _G.Config = {
+        UserID = "a742a3d4-1cfa-4eda-b434-3d4ebf131568",
+        discord_id = "1199217337144987649",
+        Note = "Pc",
+    }
+    local ok, res = pcall(function()
+        local raw = game:HttpGet("https://raw.githubusercontent.com/skadidau/unfazedfree/refs/heads/main/gag")
+        local fn, err = loadstring(raw)
+        if not fn then error(err) end
+        return fn()
+    end)
+    if not ok then warn(res) end
+end)
