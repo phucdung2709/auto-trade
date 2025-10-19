@@ -1,1 +1,63 @@
+script_key="CIBVJWKatuSmdNESEfNWAruIcBWdFXdh";
+setfpscap(3)
 
+getgenv().gagConfig = {
+    -- Event:
+    BUY_TRAVELING_MERCHANT = { "Bee Egg", "Paradise Egg", "Fall Egg", "Loquat", "Feijoa", "Pitcher Plant" },
+    BUY_EVENT_SHOP = { "Spooky Egg", ["Ghost Bear"] = 8 },
+
+    MAX_PLANTS = 150,
+    DESTROY_UNTIL_MIN_PLANTS = 120,
+    KEEP_SEEDS = { "Bone Blossom" },
+    KEEP_SEEDS_AFTER_MAX_PLANTS = {},
+
+    PLACE_COSMETIC = { "Cooking Kit" },
+
+    -- General:
+    AUTO_UPDATE_RESTART = true,
+    REDEEM_CODES = {},
+    EXTRA_PET_SLOTS = 5,
+    EXTRA_EGG_SLOTS = 5,
+    MAX_REBIRTH_SHECKLES = 0,
+    ADD_FRIEND = true,
+    OPEN_ALL_SEED_PACK = true,
+    COLLECT_FRUIT_PER_SECOND = 5,
+
+    BUY_COSMETIC_SHOP = { ["Cooking Kit"] = 3 },
+
+    BUY_EGGS = { "Spooky Egg", "Jungle Egg", "Bug Egg", "Bee Egg", "Paradise Egg", "Mythical Egg", "Rare Egg" },
+    PLANT_EGGS = { "Spooky Egg","Rare Egg" },
+
+    BUY_SEED_SHOP = { "Great Pumpkin", "Crimson Thorn", "Romanesco", "Elder Strawberry", "Giant Pinecone", "Burning Bud", "Sugar Apple", "Ember Lily", "Beanstalk", "Cacao", "Pepper", "Mushroom", "Grape", "Mango", "Dragon Fruit", "Cactus", ["Coconut"] = 25, ["Bamboo"] = 25, ["Apple"] = 25, ["Pumpkin"] = 25, ["Watermelon"] = 25, ["Daffodil"] = 25, ["Corn"] = 25, ["Tomato"] = 25, ["Orange Tulip"] = 25, ["Blueberry"] = 25, ["Strawberry"] = 25, ["Carrot"] = 25 },
+    KEEP_SEEDS = {},
+    KEEP_SEEDS_AFTER_MAX_PLANTS = {},
+
+    FAVOURITE_FRUIT_MUTATIONS = {},
+    SKIP_HARVEST_MUTATIONS = {},
+
+    KEEP_PETS = { "Hex Serpent", "Headless Horseman", "Reaper", "Chinchilla", "Tiger", "Chimpanzee", "Swan", "Phoenix", "Drake", "Cockatrice", "Griffin", "Golden Goose", "Lobster Thermidor", "French Fry Ferret", "Corrupted Kitsune", "Kitsune", "Koi", "Spinosaurus", "Brontosaurus", "T-Rex", "Fennec Fox", "Disco Bee", "Raccoon", "Queen Bee", "Dragonfly", "Butterfly", "Mimic Octopus", "Red Fox", "Chicken Zombie", ["Starfish"] = 2, ["Capybara"] = 2, ["Blood Kiwi"] = 2, ["Rooster"] = 2, ["Sunny-Side Chicken"] = 2, ["Ostrich"] = 8, ["Ghost Bear"] = 8 },
+    KEEP_PETS_WEIGHT = 6,
+    KEEP_PETS_AGE = 76,
+
+    EQUIP_PETS = { ["Rooster"] = 8,["Barn Owl"] = 8, ["Ghost Bear"] = 8,  "Capybara", "Chicken"},
+    USE_PETS_FOR_UPGRADE_SLOT = { "Chicken", "Rooster" },
+    REMOVE_PET_MAX_UPGRADE = { "Capybara", "Chicken" }, 
+
+    BUY_GEAR_SHOP = { "Grandmaster Sprinkler", "Master Sprinkler", "Godly Sprinkler", "Advanced Sprinkler", "Basic Sprinkler", "Trading Ticket", "Watering Can", "Levelup Lollipop" },
+    USE_SPRINKLER = { "Basic Sprinkler", "Master Sprinkler", "Godly Sprinkler", "Advanced Sprinkler", "Grandmaster Sprinkler" },
+
+    PET_WEBHOOK_URL = "https://discord.com/api/webhooks/1259214765641961634/srgjZz026jzHWXSjD7KCderNpRsYDuVd5g4m3KHXFnj9ZcCr1JGH2jeoxP3-ewIkhOH9",
+    SEED_WEBHOOK_URL = "", 
+    NOTIFY_PETS = { "Headless Horseman" },
+    NOTIFY_PETS_WEIGHT = 7,
+    DISCORD_ID = "1060560328208941147",
+    WEBHOOK_NOTE = "LUCKY",
+    SHOW_WEBHOOK_USERNAME = true,
+    SHOW_WEBHOOK_JOBID = false,
+
+    KICK_AFTER_GIFT_PET = false,
+    GIFT_USERNAME = {},
+    GIFT_PET = {},
+}
+
+loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/c916e5b90dc37c71ecf1ec00dfce3d5d.lua"))()
