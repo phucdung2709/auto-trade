@@ -1,1 +1,66 @@
+getgenv().Key = "k19550553428fd308f4223ad"
 
+getgenv().Config = {
+    ["Gameplay"] = {
+        ["Server Type"] = "Private",
+        ["Collect Cash Cap"] = "2T",
+        ["Max Auctioning Multiplier"] = 10,
+        ["Lock Base Extra Time"] = 5,
+    },
+
+    ["Misc"] = {
+        ["Kick if Ping above"] = 2000000000000000,
+        ["Kick if FPS below"] = 0,
+        ["Max Rebirth"] = -1,
+
+        ["Ignore Secret"] = {
+            ["La Cucaracha"] = { "All" },
+            ["Job Job Job Sahur"] = { "All" },
+            ["Las Tralaleritas"] = { "All" },
+            ["To to to Sahur"] = { "All" },
+            ["Trickolino"] = { "All" },
+            ["Dul Dul Dul"] = { "All" },
+            ["Zombie Tralala"] = { "All" },
+            ["Los Tralaleritos"] = { "All" },
+            ["La Vacca Saturno Saturnita"] = { "All" },
+        },
+
+        ["Buy Lucky Block"] = {
+            "Admin Lucky Block",
+            "Secret Lucky Block",
+            "Los Lucky Blocks",
+            "Taco Lucky Block",
+            "Los Taco Lucky Block",
+            "Spooky Lucky Block",
+        },
+
+        ["Open Lucky Block"] = {
+            "Taco Lucky Block",
+        },
+    },
+
+    ["Performance"] = {
+        ["FPS Cap"] = 10,
+        ["Black Screen"] = true,
+    },
+
+    ["Webhook"] = {
+        ["Url"] = "https://discord.com/api/webhooks/1259214765641961634/srgjZz026jzHWXSjD7KCderNpRsYDuVd5g4m3KHXFnj9ZcCr1JGH2jeoxP3-ewIkhOH9",
+        ["Ignore Notify"] = {},
+    },
+}
+
+spawn(function()
+    task.wait(30)
+    if not getgenv().scriptLoaded then
+        game.Players.LocalPlayer:Kick("Script load timeout\nKick to prevent animal gets stolen")
+    end
+end)
+
+repeat
+    wait()
+    spawn(function()
+        loadstring(game:HttpGet("https://nousigi.com/loader.lua"))()
+    end)
+    wait(20)
+until getgenv().Joebiden
