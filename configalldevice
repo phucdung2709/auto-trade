@@ -23,6 +23,8 @@ getgenv().Config = {
             ["Zombie Tralala"] = { "All" },
             ["Los Tralaleritos"] = { "All" },
             ["La Vacca Saturno Saturnita"] = { "All" },
+            ["Guerriro Digitale"] = { "All" },
+            ["Karkerkar Kurkur"] = { "All" },
         },
 
         ["Buy Lucky Block"] = {
@@ -30,7 +32,7 @@ getgenv().Config = {
             "Secret Lucky Block",
             "Los Lucky Blocks",
             "Taco Lucky Block",
-            "Los Taco Lucky Block",
+            "Los Taco Blocks",
             "Spooky Lucky Block",
         },
 
@@ -40,7 +42,7 @@ getgenv().Config = {
     },
 
     ["Performance"] = {
-        ["FPS Cap"] = 10,
+        ["FPS Cap"] = 5,
         ["Black Screen"] = true,
     },
 
