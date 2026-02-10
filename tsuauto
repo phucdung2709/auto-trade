@@ -1,0 +1,257 @@
+-- ===================================================================
+-- 1. KHỞI TẠO AN TOÀN & CHỐNG CRASH
+-- ===================================================================
+if not game:IsLoaded() then game.Loaded:Wait() end
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Đợi nhân vật và túi đồ
+repeat task.wait(0.5) until LocalPlayer.Character and LocalPlayer:FindFirstChild("Backpack")
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ClientGlobals
+
+-- Load dữ liệu game an toàn
+repeat 
+    local success, result = pcall(function() 
+        return require(ReplicatedStorage.Client.Modules.ClientGlobals) 
+    end)
+    if success and result and result.Plots and result.Plots.Data then
+        ClientGlobals = result
+    end
+    task.wait(0.5)
+until ClientGlobals
+
+local EconomyMath = require(ReplicatedStorage.Shared.utils.EconomyMath)
+
+-- ===================================================================
+-- 2. THIẾT LẬP REMOTE CHUẨN
+-- ===================================================================
+local Net = ReplicatedStorage:WaitForChild("Packages"):WaitForChild("Net")
+
+local PlotActionRF = Net:WaitForChild("RF/Plot.PlotAction")
+local SendTradeRF = Net:WaitForChild("RF/Trade.SendTrade")       -- Remote gửi yêu cầu
+local SetSlotOfferRF = Net:WaitForChild("RF/Trade.SetSlotOffer") -- Remote add pet (UUID)
+local RebirthRF = ReplicatedStorage:WaitForChild("RemoteFunctions"):WaitForChild("Rebirth")
+local UpgradeSpeedRF = ReplicatedStorage:WaitForChild("RemoteFunctions"):WaitForChild("UpgradeSpeed")
+
+-- VARIABLES
+local AutoRebirthEnabled = true -- ON SẴN
+
+-- UTILS
+local function getMyPlotId()
+    if not ClientGlobals or not ClientGlobals.Plots.Data then return nil end
+    for id, data in pairs(ClientGlobals.Plots.Data) do
+        if data.player == LocalPlayer then return id end
+    end
+    return nil
+end
+
+-- ===================================================================
+-- 3. GIAO DIỆN (UI)
+-- ===================================================================
+local ScreenGui = Instance.new("ScreenGui", LocalPlayer.PlayerGui)
+ScreenGui.Name = "Z_V14_Fixed"
+ScreenGui.ResetOnSpawn = false
+
+local Main = Instance.new("Frame", ScreenGui)
+Main.Size = UDim2.new(0, 450, 0, 320)
+Main.Position = UDim2.new(0.5, -225, 0.4, -160)
+Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+Main.Active = true
+Main.Draggable = true
+Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 8)
+
+-- Title
+local Title = Instance.new("TextLabel", Main)
+Title.Size = UDim2.new(1, 0, 0, 35)
+Title.Text = "BRAINROT MANAGER V14 (FIXED)"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.Font = Enum.Font.GothamBold
+Title.BackgroundTransparency = 1
+
+local LeftPanel = Instance.new("Frame", Main)
+LeftPanel.Size = UDim2.new(0.5, -15, 1, -50)
+LeftPanel.Position = UDim2.new(0, 10, 0, 40)
+LeftPanel.BackgroundTransparency = 1
+Instance.new("UIListLayout", LeftPanel).Padding = UDim.new(0, 5)
+
+local RightPanel = Instance.new("Frame", Main)
+RightPanel.Size = UDim2.new(0.5, -15, 1, -50)
+RightPanel.Position = UDim2.new(0.5, 5, 0, 40)
+RightPanel.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Instance.new("UICorner", RightPanel)
+
+local Scroll = Instance.new("ScrollingFrame", RightPanel)
+Scroll.Size = UDim2.new(1, -10, 1, -10)
+Scroll.Position = UDim2.new(0, 5, 0, 5)
+Scroll.BackgroundTransparency = 1
+Scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+Scroll.CanvasSize = UDim2.new(0,0,0,0)
+Instance.new("UIListLayout", Scroll).Padding = UDim.new(0, 4)
+
+local function createBtn(text, color, parent, func)
+    local btn = Instance.new("TextButton", parent)
+    btn.Size = UDim2.new(1, 0, 0, 35)
+    btn.BackgroundColor3 = color
+    btn.Text = text
+    btn.TextColor3 = Color3.new(1, 1, 1)
+    btn.Font = Enum.Font.GothamBold
+    btn.TextSize = 10
+    Instance.new("UICorner", btn)
+    if func then btn.MouseButton1Click:Connect(func) end
+    return btn
+end
+
+-- --- BUTTON ACTIONS ---
+
+-- 1. TRADE ADD (FIXED 6/6)
+createBtn("TRADE: ADD 6 PETS", Color3.fromRGB(241, 196, 15), LeftPanel, function()
+    local backpack = LocalPlayer.Backpack:GetChildren()
+    local tools = {}
+    -- Lọc lấy Tool trước
+    for _, v in ipairs(backpack) do
+        if v:IsA("Tool") then table.insert(tools, v) end
+    end
+
+    -- Loop chính xác 6 lần
+    for i = 1, 6 do
+        if tools[i] then
+            local item = tools[i]
+            -- Lấy UUID chuẩn (thử nhiều cách để không bị nil)
+            local uuid = item:GetAttribute("UUID") or item:GetAttribute("UniqueId") or item:GetAttribute("uuid") or item.Name
+            
+            task.spawn(function()
+                SetSlotOfferRF:InvokeServer(tostring(i), uuid)
+            end)
+            -- Tăng delay lên 0.25 để server kịp nhận xử lý con thứ 6
+            task.wait(0.25)
+        end
+    end
+end)
+
+-- 2. PLOT: PLACE ALL (FIXED "K WORK")
+createBtn("PLOT: PLACE ALL (FORCE)", Color3.fromRGB(52, 152, 219), LeftPanel, function()
+    local plotId = getMyPlotId()
+    local hum = LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+    if not plotId or not hum then return end
+
+    local backpack = LocalPlayer.Backpack:GetChildren()
+    local pets = {}
+    for _, v in ipairs(backpack) do 
+        if v:IsA("Tool") then table.insert(pets, v) end 
+    end
+
+    -- Chế độ Force Place: Cứ có pet là đặt vào slot tương ứng, không cần check trống
+    for i = 1, 12 do
+        if pets[i] then
+            hum:EquipTool(pets[i])
+            task.wait(0.2) -- Bắt buộc phải wait để Equip server nhận diện
+            PlotActionRF:InvokeServer("Place Brainrot", plotId, tostring(i), pets[i].Name)
+            task.wait(0.1)
+        else
+            break -- Hết pet thì dừng
+        end
+    end
+    hum:UnequipTools()
+end)
+
+-- 3. PLOT: PICK UP ALL
+createBtn("PLOT: PICK UP ALL", Color3.fromRGB(231, 76, 60), LeftPanel, function()
+    local plotId = getMyPlotId()
+    if not plotId then return end
+    for i = 1, 12 do
+        task.spawn(function() 
+            PlotActionRF:InvokeServer("Pick Up Brainrot", plotId, tostring(i)) 
+        end)
+    end
+end)
+
+-- 4. AUTO REBIRTH TOGGLE
+local btnRebirth = createBtn("AUTO REBIRTH: ON", Color3.fromRGB(142, 68, 173), LeftPanel, function()
+    AutoRebirthEnabled = not AutoRebirthEnabled
+    btnRebirth.Text = "AUTO REBIRTH: " .. (AutoRebirthEnabled and "ON" or "OFF")
+    btnRebirth.BackgroundColor3 = AutoRebirthEnabled and Color3.fromRGB(142, 68, 173) or Color3.fromRGB(155, 89, 182)
+end)
+
+-- PLAYER LIST
+local function updatePlayerList()
+    for _, child in pairs(Scroll:GetChildren()) do
+        if child:IsA("TextButton") then child:Destroy() end
+    end
+    for _, p in pairs(Players:GetPlayers()) do
+        if p ~= LocalPlayer then
+            local pName = p.DisplayName
+            createBtn(pName, Color3.fromRGB(45, 45, 45), Scroll, function()
+                if SendTradeRF then SendTradeRF:InvokeServer(p) end
+            end).Size = UDim2.new(1, 0, 0, 30)
+        end
+    end
+end
+Players.PlayerAdded:Connect(updatePlayerList)
+Players.PlayerRemoving:Connect(updatePlayerList)
+updatePlayerList()
+
+-- ===================================================================
+-- 4. HỆ THỐNG LOOPS (FIXED ERRORS)
+-- ===================================================================
+
+-- AUTO COLLECT (1 GIÂY/LẦN)
+task.spawn(function()
+    while true do
+        local plotId = getMyPlotId()
+        if plotId then
+            for i = 1, 12 do
+                task.spawn(function() 
+                    PlotActionRF:InvokeServer("Collect Money", plotId, tostring(i)) 
+                end)
+            end
+        end
+        task.wait(1)
+    end
+end)
+
+-- AUTO REBIRTH (FIXED NIL ERROR)
+task.spawn(function()
+    while true do
+        if AutoRebirthEnabled then
+            -- Dùng pcall để chặn lỗi crash script
+            pcall(function()
+                local currentR = LocalPlayer:GetAttribute("Rebirth") or 0
+                local myS = LocalPlayer:GetAttribute("CurrentSpeed") or 0
+                
+                -- Tính toán Speed yêu cầu
+                local reqS = EconomyMath.GetRebirthRequiredSpeed(currentR + 1)
+                
+                -- FIX QUAN TRỌNG: Chỉ chạy nếu reqS là số (không phải nil)
+                if type(reqS) == "number" then
+                    if myS < reqS then
+                        -- Spam 5 request để tăng tốc
+                        for k=1, 5 do 
+                            task.spawn(function() UpgradeSpeedRF:InvokeServer(10) end) 
+                        end
+                    else
+                        RebirthRF:InvokeServer()
+                    end
+                end
+            end)
+        end
+        task.wait(0.15)
+    end
+end)
+
+-- TOGGLE MENU
+local Toggle = Instance.new("TextButton", ScreenGui)
+Toggle.Size = UDim2.new(0, 50, 0, 30)
+Toggle.Position = UDim2.new(0, 10, 0.5, 0)
+Toggle.Text = "HIDE"
+Toggle.BackgroundColor3 = Color3.new(0,0,0)
+Toggle.TextColor3 = Color3.new(1,1,1)
+Instance.new("UICorner", Toggle)
+Toggle.MouseButton1Click:Connect(function() 
+    Main.Visible = not Main.Visible 
+    Toggle.Text = Main.Visible and "HIDE" or "OPEN"
+end)
+
+print("✅ V14 Final: Add 6/6 Fixed, Place Force Mode, No Nil Errors!")
